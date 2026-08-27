@@ -1,36 +1,135 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Paleo Virtual FCEyN
 
-## Getting Started
+Visualizador web para objetos 3D del repositorio paleontológico de la Facultad de Ciencias Exactas y Naturales.
 
-First, run the development server:
+La primera versión incluye home institucional, colección navegable, búsqueda, filtros, ficha de detalle y visualizador 3D para modelos `.glb` o `.gltf`.
+
+## Stack
+
+- Next.js App Router
+- TypeScript estricto
+- Tailwind CSS
+- shadcn/ui
+- three.js con React Three Fiber y Drei
+- Prettier con `prettier-plugin-tailwindcss`
+- ESLint recomendado para Next.js
+
+## Scripts
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run build
+npm run start
+npm run lint
+npm run typecheck
+npm run format
+npm run check
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Variables de entorno
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Crear `.env.local` a partir de `.env.example` si se necesita configurar la URL pública del sitio:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
 
-## Learn More
+En producción, usar el dominio institucional final. Esta variable se usa para metadata y Open Graph.
 
-To learn more about Next.js, take a look at the following resources:
+## Estructura principal
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```txt
+src/app/
+src/components/
+src/components/ui/
+src/data/specimens.ts
+src/types/specimen.ts
+src/lib/utils.ts
+public/specimens/
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Carga de modelos reales
 
-## Deploy on Vercel
+Cada pieza se declara en `src/data/specimens.ts` siguiendo el tipo `Specimen` definido en `src/types/specimen.ts`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Campos mínimos recomendados:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```ts
+{
+  id: "pvf-001",
+  name: "Nombre de la pieza",
+  slug: "nombre-de-la-pieza",
+  inventoryNumber: "FCEyN-PV-001",
+  description: "Descripción pública y clara de la pieza.",
+  category: "Cráneo",
+  period: "Pleistoceno tardío",
+  provenance: "Procedencia institucional o geográfica",
+  modelUrl: "/models/nombre-de-la-pieza.glb",
+  thumbnailUrl: "/specimens/nombre-de-la-pieza.jpg",
+  credits: "Créditos curatoriales y de digitalización.",
+  license: "Condiciones de uso.",
+}
+```
+
+Campos científicos opcionales:
+
+- `taxon`
+- `geologicalFormation`
+- `estimatedAge`
+- `material`
+- `dimensions`
+- `collector`
+- `digitizationDate`
+- `digitizationMethod`
+- `doi`
+- `bibliographicCitation`
+
+Los campos opcionales pueden omitirse. La ficha de detalle solo muestra los metadatos que tienen contenido.
+
+## Dónde guardar archivos 3D
+
+Para una demo o catálogo chico, se pueden guardar modelos en `public/models/` y referenciarlos como `/models/archivo.glb`.
+
+Para un repositorio institucional con modelos pesados, conviene usar almacenamiento externo o CDN institucional y guardar la URL absoluta en `modelUrl`.
+
+Recomendaciones para `.glb`:
+
+- Usar `.glb` como formato principal para web.
+- Optimizar peso antes de publicar.
+- Mantener texturas comprimidas cuando sea posible.
+- Evitar nombres con espacios o caracteres especiales.
+- Usar slugs estables, por ejemplo `craneo-fosil-fceyn-001.glb`.
+- Verificar que el servidor exponga correctamente el archivo y permita acceso público.
+
+## Miniaturas
+
+Las miniaturas se referencian con `thumbnailUrl`.
+
+Para archivos locales, usar `public/specimens/`:
+
+```txt
+public/specimens/craneo-fosil-fceyn-001.jpg
+```
+
+Y en datos:
+
+```ts
+thumbnailUrl: "/specimens/craneo-fosil-fceyn-001.jpg";
+```
+
+## Buenas prácticas curatoriales
+
+- Diferenciar datos confirmados de datos preliminares.
+- No publicar procedencias sensibles si pueden comprometer sitios paleontológicos.
+- Incluir créditos de digitalización y curaduría.
+- Definir condiciones de uso antes de abrir descargas o reutilización.
+- Mantener identificadores institucionales estables.
+
+## Desarrollo local
+
+```bash
+npm install
+npm run dev
+```
+
+Abrir `http://localhost:3000`.

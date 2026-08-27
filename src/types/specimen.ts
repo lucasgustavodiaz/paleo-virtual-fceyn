@@ -1,0 +1,24 @@
+export type Specimen = {
+  id: string;
+  name: string;
+  slug: string;
+  inventoryNumber: string;
+  description: string;
+  category: string;
+  period: string;
+  provenance: string;
+  modelUrl: string;
+  thumbnailUrl: string;
+  credits: string;
+  license: string;
+  taxon?: string;
+  geologicalFormation?: string;
+  estimatedAge?: string;
+  material?: string;
+  dimensions?: string;
+  collector?: string;
+  digitizationDate?: string;
+  digitizationMethod?: string;
+  doi?: string;
+  bibliographicCitation?: string;
+};

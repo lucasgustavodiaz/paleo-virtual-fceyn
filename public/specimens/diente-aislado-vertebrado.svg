@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Miniatura de diente aislado de vertebrado</title>
+  <desc id="desc">Ilustración abstracta de un diente fósil.</desc>
+  <rect width="800" height="600" fill="#f1eadf"/>
+  <path d="M402 92c92 122 126 242 92 358-12 40-35 64-63 58-22-5-31-28-37-57-7-34-14-34-29 0-13 30-24 54-49 52-30-3-49-33-44-79 12-114 55-225 130-332Z" fill="#8d7157"/>
+  <path d="M407 154c48 83 65 163 52 241" stroke="#cbb79c" stroke-width="36" stroke-linecap="round" opacity="0.8"/>
+  <path d="M255 504h290" stroke="#c7b394" stroke-width="18" stroke-linecap="round"/>
+</svg>

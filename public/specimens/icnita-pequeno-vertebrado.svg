@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Miniatura de icnita de pequeño vertebrado</title>
+  <desc id="desc">Ilustración abstracta de una huella fósil sobre roca.</desc>
+  <rect width="800" height="600" fill="#e9e1d2"/>
+  <path d="M190 170c102-45 230-54 354-14 77 25 122 65 136 114 21 74-36 151-137 185-119 40-265 21-354-45-82-61-82-161 1-240Z" fill="#b7a184"/>
+  <ellipse cx="370" cy="305" rx="60" ry="88" fill="#725943" opacity="0.9"/>
+  <ellipse cx="300" cy="235" rx="34" ry="48" fill="#725943" opacity="0.82"/>
+  <ellipse cx="380" cy="205" rx="34" ry="52" fill="#725943" opacity="0.82"/>
+  <ellipse cx="460" cy="235" rx="34" ry="48" fill="#725943" opacity="0.82"/>
+  <path d="M170 494h460" stroke="#cdbb9f" stroke-width="18" stroke-linecap="round"/>
+</svg>

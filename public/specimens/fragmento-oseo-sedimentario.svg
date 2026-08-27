@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Miniatura de fragmento óseo sedimentario</title>
+  <desc id="desc">Ilustración abstracta de un fragmento óseo sobre sedimento.</desc>
+  <rect width="800" height="600" fill="#ebe4d8"/>
+  <path d="M250 165c72-35 185-12 243 54 54 61 50 146-12 179-75 41-190 1-241-75-43-64-35-135 10-158Z" fill="#92765b"/>
+  <path d="M310 222c48-12 103 4 136 40 35 39 33 83-5 99-45 19-111-7-142-56-26-41-20-74 11-83Z" fill="#c9b89e"/>
+  <path d="M145 452c117-45 236-54 358-27 64 14 116 34 152 59" fill="none" stroke="#baa88e" stroke-width="36" stroke-linecap="round"/>
+  <circle cx="593" cy="177" r="102" fill="#d4c3aa" opacity="0.58"/>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Miniatura de vértebra dorsal fósil</title>
+  <desc id="desc">Ilustración abstracta de una vértebra fósil.</desc>
+  <rect width="800" height="600" fill="#eee7dc"/>
+  <circle cx="610" cy="150" r="150" fill="#d7c3a5" opacity="0.58"/>
+  <path d="M400 132c48 0 86 37 86 83 0 28-15 55-38 70l98 98c18 18 18 47 0 64s-47 16-64-2l-82-87-82 87c-17 18-46 19-64 2s-18-46 0-64l98-98c-23-15-38-42-38-70 0-46 38-83 86-83Z" fill="#82664d"/>
+  <circle cx="400" cy="215" r="42" fill="#f5efe4" opacity="0.9"/>
+  <path d="M222 460h356" stroke="#c9b79b" stroke-width="18" stroke-linecap="round"/>
+</svg>

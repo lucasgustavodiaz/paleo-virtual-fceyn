@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Miniatura de mandíbula de mamífero fósil</title>
+  <desc id="desc">Ilustración abstracta de una mandíbula fósil.</desc>
+  <rect width="800" height="600" fill="#f0eadf"/>
+  <path d="M150 250c86 130 210 190 356 171 84-11 141-43 171-93" fill="none" stroke="#7f6248" stroke-width="54" stroke-linecap="round"/>
+  <path d="M252 292l-24 70M328 335l-10 80M410 361l6 78M492 355l18 70" stroke="#f9f5ed" stroke-width="28" stroke-linecap="round"/>
+  <circle cx="198" cy="214" r="46" fill="#cbb89f"/>
+  <circle cx="626" cy="278" r="64" fill="#d9c8ad" opacity="0.75"/>
+  <path d="M146 492h508" stroke="#d1c1aa" stroke-width="18" stroke-linecap="round"/>
+</svg>

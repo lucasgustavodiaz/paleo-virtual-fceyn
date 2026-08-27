@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Composición abstracta de fósiles</title>
+  <desc id="desc">Fondo institucional con siluetas fósiles y texturas sedimentarias.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#292524"/>
+      <stop offset="0.58" stop-color="#57534e"/>
+      <stop offset="1" stop-color="#d6c7ad"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="1260" cy="210" r="290" fill="#f5efe6" opacity="0.13"/>
+  <circle cx="220" cy="720" r="360" fill="#d8c7ad" opacity="0.12"/>
+  <path d="M230 470c-55-190 91-365 307-396 239-35 501 87 558 266 43 136-49 256-212 287-90 17-160-19-256-4-105 17-164 84-251 55-69-23-121-119-146-208Z" fill="#f8f4ec" opacity="0.13"/>
+  <path d="M492 392c35-66 142-83 216-35 64 43 64 122-4 152-85 37-249-29-212-117Z" fill="#ffffff" opacity="0.16"/>
+  <path d="M864 346c60-56 179-43 231 17 45 52 10 121-68 132-99 16-241-76-163-149Z" fill="#ffffff" opacity="0.15"/>
+  <path d="M162 770c268-93 537-113 806-59 174 35 323 88 448 159" fill="none" stroke="#f5efe6" stroke-width="32" stroke-linecap="round" opacity="0.14"/>
+  <path d="M96 122h440M1034 690h410M892 172h266" stroke="#f5efe6" stroke-width="5" stroke-linecap="round" opacity="0.18"/>
+</svg>
