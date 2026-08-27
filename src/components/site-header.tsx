@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Logo } from "@/components/logo";
+import { MobileNavigation } from "@/components/mobile-navigation";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const navigationItems = [
@@ -25,7 +26,7 @@ export function SiteHeader() {
         </div>
         <nav
           aria-label="Navegación principal"
-          className="flex items-center gap-3"
+          className="hidden items-center gap-3 sm:flex"
         >
           <div className="flex items-center rounded-full border border-stone-200 bg-white/80 p-1 shadow-sm dark:border-stone-700 dark:bg-stone-900 dark:shadow-black/20">
             {navigationItems.map((item) => (
@@ -40,6 +41,7 @@ export function SiteHeader() {
           </div>
           <ThemeToggle />
         </nav>
+        <MobileNavigation />
       </div>
     </header>
   );
