@@ -11,8 +11,8 @@ export default function Home() {
   return (
     <main className="flex-1 bg-amber-50 dark:bg-stone-950">
       <section className="relative overflow-hidden border-b bg-amber-50 text-stone-950 dark:bg-stone-950 dark:text-white">
-        <div className="absolute inset-0 bg-[url('/hero-paleo.svg')] bg-cover bg-center opacity-20 saturate-75 dark:opacity-70 dark:saturate-100" />
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-50 via-amber-50/92 to-white/55 dark:from-stone-950 dark:via-stone-950/80 dark:to-stone-950/20" />
+        <div className="absolute inset-0 bg-[url('/hero-paleo.svg')] bg-cover bg-center opacity-34 saturate-90 dark:opacity-70 dark:saturate-100" />
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-50 via-amber-50/82 to-amber-50/25 dark:from-stone-950 dark:via-stone-950/80 dark:to-stone-950/20" />
         <div className="relative mx-auto grid min-h-[620px] max-w-7xl items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-24">
           <div className="max-w-3xl">
             <Badge
