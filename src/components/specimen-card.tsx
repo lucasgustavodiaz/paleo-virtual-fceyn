@@ -22,7 +22,7 @@ export function SpecimenCard({ specimen }: SpecimenCardProps) {
   const hasModel = specimen.modelUrl.trim().length > 0;
 
   return (
-    <Card className="h-full border-stone-200 bg-white/90 pt-0 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-stone-700 dark:bg-stone-950 dark:ring-1 dark:ring-stone-700/70 dark:hover:border-amber-300/40">
+    <Card className="h-full border-stone-200 bg-white/90 pt-0 shadow-sm transition hover:border-stone-300 hover:shadow-md dark:border-stone-700 dark:bg-stone-950 dark:ring-1 dark:ring-stone-700/70 dark:hover:border-amber-300/40">
       {hasModel ? (
         <Link
           href={`/specimens/${specimen.slug}`}
