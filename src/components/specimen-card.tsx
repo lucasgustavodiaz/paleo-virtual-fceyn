@@ -72,7 +72,9 @@ export function SpecimenCard({ specimen }: SpecimenCardProps) {
             {specimen.category}
           </Badge>
         </div>
-        <CardDescription>{specimen.inventoryNumber}</CardDescription>
+        <CardDescription className="dark:text-stone-400">
+          {specimen.inventoryNumber}
+        </CardDescription>
       </CardHeader>
       <CardContent className="grow">
         <p className="text-muted-foreground line-clamp-3 text-sm leading-6 dark:text-stone-300">

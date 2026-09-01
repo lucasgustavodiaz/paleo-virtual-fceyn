@@ -29,7 +29,7 @@ export function MobileNavigation() {
       <ThemeToggle />
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger
-          className="focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-lg border border-stone-200 bg-white/80 text-stone-800 shadow-sm transition hover:bg-stone-100 focus-visible:ring-2 focus-visible:outline-none dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 dark:hover:bg-stone-800"
+          className="focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-lg border border-stone-200 bg-white/80 text-stone-800 shadow-sm transition hover:bg-stone-100 focus-visible:ring-2 focus-visible:outline-none dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 dark:hover:bg-amber-400/12 dark:hover:text-amber-100"
           aria-label="Abrir menú de navegación"
         >
           <Menu aria-hidden="true" className="size-4" />
@@ -50,7 +50,7 @@ export function MobileNavigation() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="focus-visible:ring-ring rounded-xl px-3 py-3 text-base font-medium text-stone-800 transition hover:bg-stone-100 hover:text-stone-950 focus-visible:ring-2 focus-visible:outline-none dark:text-stone-100 dark:hover:bg-stone-900 dark:hover:text-amber-100"
+                className="focus-visible:ring-ring rounded-xl border border-transparent px-3 py-3 text-base font-semibold text-stone-800 transition hover:bg-stone-100 hover:text-stone-950 focus-visible:ring-2 focus-visible:outline-none dark:text-stone-50 dark:hover:border-stone-700 dark:hover:bg-amber-400/12 dark:hover:text-amber-100"
               >
                 {item.label}
               </Link>

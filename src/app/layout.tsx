@@ -34,6 +34,21 @@ export const metadata: Metadata = {
     siteName: "Paleo Virtual FCEyN",
     locale: "es_AR",
     type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Paleo Virtual FCEyN - Repositorio institucional 3D",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Paleo Virtual FCEyN",
+    description:
+      "Colección web para explorar objetos paleontológicos digitalizados en 3D.",
+    images: ["/opengraph-image"],
   },
 };
 
