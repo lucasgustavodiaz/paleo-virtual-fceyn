@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ArrowLeft, ArrowRight, Download } from "lucide-react";
+
 import { ModelViewer } from "@/components/model-viewer";
 import { SpecimenMetadata } from "@/components/specimen-metadata";
 import { buttonVariants } from "@/components/ui/button";
@@ -54,6 +56,14 @@ export default async function SpecimenDetailPage({
     notFound();
   }
 
+  const specimenIndex = specimens.findIndex(
+    (currentSpecimen) => currentSpecimen.slug === specimen.slug,
+  );
+  const previousSpecimen =
+    specimens[(specimenIndex - 1 + specimens.length) % specimens.length];
+  const nextSpecimen = specimens[(specimenIndex + 1) % specimens.length];
+  const specimenJsonHref = `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(specimen, null, 2))}`;
+
   return (
     <main className="bg-background flex-1">
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -78,6 +88,53 @@ export default async function SpecimenDetailPage({
             label={`Visualizador 3D de ${specimen.name}`}
           />
           <SpecimenMetadata specimen={specimen} />
+        </div>
+        <div className="mt-8 grid gap-3 sm:grid-cols-3">
+          <Link
+            href={`/specimens/${previousSpecimen.slug}`}
+            className={cn(
+              buttonVariants({ variant: "outline", size: "lg" }),
+              "h-auto justify-start gap-3 p-4 text-left",
+            )}
+          >
+            <ArrowLeft aria-hidden="true" />
+            <span>
+              <span className="text-muted-foreground block font-mono text-[0.62rem] tracking-[0.16em] uppercase">
+                Anterior
+              </span>
+              <span className="block whitespace-normal">
+                {previousSpecimen.name}
+              </span>
+            </span>
+          </Link>
+          <a
+            href={specimenJsonHref}
+            download={`${specimen.slug}.json`}
+            className={cn(
+              buttonVariants({ variant: "secondary", size: "lg" }),
+              "h-auto gap-3 p-4",
+            )}
+          >
+            <Download aria-hidden="true" />
+            Descargar ficha JSON
+          </a>
+          <Link
+            href={`/specimens/${nextSpecimen.slug}`}
+            className={cn(
+              buttonVariants({ variant: "outline", size: "lg" }),
+              "h-auto justify-end gap-3 p-4 text-right",
+            )}
+          >
+            <span>
+              <span className="text-muted-foreground block font-mono text-[0.62rem] tracking-[0.16em] uppercase">
+                Siguiente
+              </span>
+              <span className="block whitespace-normal">
+                {nextSpecimen.name}
+              </span>
+            </span>
+            <ArrowRight aria-hidden="true" />
+          </Link>
         </div>
       </section>
     </main>

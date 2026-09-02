@@ -21,6 +21,7 @@ La interfaz usa una identidad visual dark-first con modo claro equivalente, acen
 ```bash
 npm run dev
 npm run build
+npm run e2e
 npm run start
 npm run lint
 npm run test
@@ -49,6 +50,13 @@ Antes de publicar cambios de interfaz, revisar manualmente:
 - Preview generado en `/opengraph-image`.
 - Favicon generado en `/icon.svg` y su lectura a tamaño de pestaña.
 
+## Funcionalidades de interfaz
+
+- La colección persiste búsqueda, filtros y ordenamiento en la URL para compartir vistas filtradas.
+- Las fichas de espécimen incluyen navegación anterior/siguiente y descarga del registro actual en JSON.
+- El viewer 3D incluye pantalla completa, reset de cámara, ayuda contextual, auto-giro, selector de iluminación y fallback cuando WebGL no está disponible.
+- El sitio expone `/sitemap.xml`, `/robots.txt`, `/opengraph-image` y `/icon.svg` desde App Router.
+
 ## Tests
 
 Los tests unitarios cubren la lógica pura de búsqueda, filtros, conteos y ordenamiento de colección en `src/lib/collection-utils.test.ts`.
@@ -56,6 +64,22 @@ Los tests unitarios cubren la lógica pura de búsqueda, filtros, conteos y orde
 ```bash
 npm run test
 ```
+
+Los tests e2e base cubren rutas principales, búsqueda compartible y ficha de detalle:
+
+```bash
+npm run e2e
+```
+
+En una máquina nueva puede ser necesario instalar navegadores de Playwright antes de ejecutar e2e:
+
+```bash
+npx playwright install
+```
+
+## CI
+
+El workflow `.github/workflows/ci.yml` corre instalación limpia, lint, tests unitarios, typecheck, format check y build en push a `main` y pull requests.
 
 ## Nota sobre Three.js
 

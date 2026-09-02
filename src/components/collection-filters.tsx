@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Search, SlidersHorizontal } from "lucide-react";
 
@@ -37,13 +38,30 @@ const filterConfig: Array<{ key: FilterKey; label: string; allLabel: string }> =
 const controlClassName =
   "h-12 w-full rounded-xl border border-[var(--paleo-border)] bg-background/82 px-3 font-mono text-sm text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] outline-none transition placeholder:text-muted-foreground/72 focus:border-primary/75 focus:ring-3 focus:ring-primary/14";
 
+const defaultFilters: CollectionFiltersState = {
+  category: "",
+  period: "",
+  provenance: "",
+};
+
+const validSortKeys: SortKey[] = ["name", "period", "inventoryNumber"];
+
 export function CollectionFilters({ specimens }: CollectionFiltersProps) {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortKey, setSortKey] = useState<SortKey>("name");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [, startTransition] = useTransition();
+  const initialSortKey = searchParams.get("sort");
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") ?? "");
+  const [sortKey, setSortKey] = useState<SortKey>(
+    validSortKeys.includes(initialSortKey as SortKey)
+      ? (initialSortKey as SortKey)
+      : "name",
+  );
   const [filters, setFilters] = useState<CollectionFiltersState>({
-    category: "",
-    period: "",
-    provenance: "",
+    category: searchParams.get("category") ?? "",
+    period: searchParams.get("period") ?? "",
+    provenance: searchParams.get("provenance") ?? "",
   });
 
   const categoryCounts = getCategoryCounts(specimens);
@@ -52,17 +70,63 @@ export function CollectionFilters({ specimens }: CollectionFiltersProps) {
   const hasActiveFilters =
     Boolean(searchQuery.trim()) || Object.values(filters).some(Boolean);
   const sortedSpecimens = sortSpecimens(filteredSpecimens, sortKey);
+  const activeFilterCount =
+    (searchQuery.trim() ? 1 : 0) +
+    Object.values(filters).filter(Boolean).length;
+
+  function syncUrl(
+    nextSearchQuery: string,
+    nextFilters: CollectionFiltersState,
+    nextSortKey: SortKey,
+  ) {
+    const nextSearchParams = new URLSearchParams();
+
+    if (nextSearchQuery.trim()) {
+      nextSearchParams.set("q", nextSearchQuery.trim());
+    }
+
+    Object.entries(nextFilters).forEach(([key, value]) => {
+      if (value) {
+        nextSearchParams.set(key, value);
+      }
+    });
+
+    if (nextSortKey !== "name") {
+      nextSearchParams.set("sort", nextSortKey);
+    }
+
+    const nextQueryString = nextSearchParams.toString();
+    const nextUrl = nextQueryString
+      ? `${pathname}?${nextQueryString}`
+      : pathname;
+
+    startTransition(() => {
+      router.replace(nextUrl, { scroll: false });
+    });
+  }
 
   function updateFilter(key: FilterKey, value: string) {
-    setFilters((currentFilters) => ({
-      ...currentFilters,
-      [key]: value,
-    }));
+    const nextFilters = { ...filters, [key]: value };
+
+    setFilters(nextFilters);
+    syncUrl(searchQuery, nextFilters, sortKey);
+  }
+
+  function updateSearchQuery(value: string) {
+    setSearchQuery(value);
+    syncUrl(value, filters, sortKey);
+  }
+
+  function updateSortKey(value: SortKey) {
+    setSortKey(value);
+    syncUrl(searchQuery, filters, value);
   }
 
   function clearFilters() {
     setSearchQuery("");
-    setFilters({ category: "", period: "", provenance: "" });
+    setFilters(defaultFilters);
+    setSortKey("name");
+    syncUrl("", defaultFilters, "name");
   }
 
   return (
@@ -104,7 +168,7 @@ export function CollectionFilters({ specimens }: CollectionFiltersProps) {
                   id="collection-search"
                   type="search"
                   value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
+                  onChange={(event) => updateSearchQuery(event.target.value)}
                   placeholder="Nombre, inventario, procedencia, descripción..."
                   className={`${controlClassName} pl-10`}
                 />
@@ -146,7 +210,9 @@ export function CollectionFilters({ specimens }: CollectionFiltersProps) {
               <select
                 id="collection-sort"
                 value={sortKey}
-                onChange={(event) => setSortKey(event.target.value as SortKey)}
+                onChange={(event) =>
+                  updateSortKey(event.target.value as SortKey)
+                }
                 className={controlClassName}
               >
                 <option value="name">Nombre</option>
@@ -158,8 +224,9 @@ export function CollectionFilters({ specimens }: CollectionFiltersProps) {
 
           <div className="flex flex-col gap-4 border-t border-[var(--paleo-border)] pt-5 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-muted-foreground text-sm">
-              Combiná búsqueda, filtros y ordenamiento para recorrer el
-              catálogo.
+              {activeFilterCount > 0
+                ? `${activeFilterCount} filtro${activeFilterCount === 1 ? "" : "s"} activo${activeFilterCount === 1 ? "" : "s"}. La URL refleja esta búsqueda para compartirla.`
+                : "Combiná búsqueda, filtros y ordenamiento para recorrer el catálogo."}
             </p>
             <Button
               type="button"

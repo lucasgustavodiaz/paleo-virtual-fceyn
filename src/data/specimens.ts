@@ -39,7 +39,7 @@ export const specimens: Specimen[] = [
     description:
       "Ficha preliminar para una pieza mandibular. Permite probar la colección con múltiples objetos y categorías.",
     modelUrl:
-      "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/Avocado/glTF-Binary/Avocado.glb",
+      "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/main/2.0/BrainStem/glTF-Binary/BrainStem.glb",
     thumbnailUrl: "/specimens/mandibula-mamifero-fosil.svg",
     credits: "Datos curatoriales de ejemplo. Modelo 3D temporal.",
     license: "Condiciones de uso a definir por la institución.",

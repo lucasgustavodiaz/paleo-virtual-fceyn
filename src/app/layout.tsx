@@ -27,6 +27,9 @@ export const metadata: Metadata = {
   },
   description:
     "Visualizador web para objetos 3D del repositorio paleontológico de la Facultad de Ciencias Exactas y Naturales.",
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: "/icon.svg",
   },

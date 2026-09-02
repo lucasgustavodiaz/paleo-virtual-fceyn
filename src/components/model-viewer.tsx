@@ -31,6 +31,24 @@ type ModelViewerProps = {
   label: string;
 };
 
+type LightingMode = "studio" | "neutral" | "contrast";
+
+const lightingOptions: Array<{ value: LightingMode; label: string }> = [
+  { value: "studio", label: "Estudio" },
+  { value: "neutral", label: "Neutra" },
+  { value: "contrast", label: "Contraste" },
+];
+
+function canUseWebGL() {
+  if (typeof document === "undefined") {
+    return true;
+  }
+
+  const canvas = document.createElement("canvas");
+
+  return Boolean(canvas.getContext("webgl2") ?? canvas.getContext("webgl"));
+}
+
 type ModelErrorBoundaryProps = {
   children: ReactNode;
 };
@@ -62,7 +80,7 @@ function FossilModel({ modelUrl }: Pick<ModelViewerProps, "modelUrl">) {
   const gltf = useGLTF(modelUrl);
 
   return (
-    <Center>
+    <Center top>
       <primitive object={gltf.scene} />
     </Center>
   );
@@ -115,6 +133,9 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
   const [resetSignal, setResetSignal] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [autoRotate, setAutoRotate] = useState(false);
+  const [lightingMode, setLightingMode] = useState<LightingMode>("studio");
+  const [supportsWebGL] = useState(canUseWebGL);
   const hasModelUrl = modelUrl.trim().length > 0;
 
   useEffect(() => {
@@ -152,17 +173,33 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
       <div className="border-primary/35 bg-background/70 text-primary pointer-events-none absolute top-4 left-4 z-20 rounded-full border px-3 py-1 font-mono text-[0.62rem] font-bold tracking-[0.18em] uppercase backdrop-blur">
         Modelo 3D
       </div>
-      {hasModelUrl ? (
+      {hasModelUrl && supportsWebGL ? (
         <Canvas
           camera={{ position: [3, 2, 5], fov: 45 }}
           gl={{ antialias: true }}
           className="bg-[radial-gradient(circle_at_center,rgba(0,126,150,0.11),transparent_38%),linear-gradient(180deg,#f4fbff,#e7f4fa)] dark:bg-[radial-gradient(circle_at_center,rgba(89,243,255,0.12),transparent_38%),linear-gradient(180deg,#0b1726,#050b12)]"
         >
-          <ambientLight intensity={1.15} />
-          <hemisphereLight args={["#f2feff", "#102235", 1.55]} />
-          <directionalLight position={[4, 6, 5]} intensity={2.4} />
-          <directionalLight position={[-4, 3, -3]} intensity={1.05} />
-          <pointLight position={[0, 3, 4]} intensity={0.9} color="#59f3ff" />
+          <ambientLight intensity={lightingMode === "contrast" ? 0.7 : 1.15} />
+          <hemisphereLight
+            args={[
+              lightingMode === "neutral" ? "#ffffff" : "#f2feff",
+              "#102235",
+              lightingMode === "contrast" ? 1.1 : 1.55,
+            ]}
+          />
+          <directionalLight
+            position={[4, 6, 5]}
+            intensity={lightingMode === "contrast" ? 3 : 2.4}
+          />
+          <directionalLight
+            position={[-4, 3, -3]}
+            intensity={lightingMode === "contrast" ? 0.55 : 1.05}
+          />
+          <pointLight
+            position={[0, 3, 4]}
+            intensity={lightingMode === "neutral" ? 0.35 : 0.9}
+            color="#59f3ff"
+          />
           <ModelErrorBoundary>
             <Suspense fallback={<LoadingModel />}>
               <Bounds fit clip observe margin={1.25}>
@@ -172,7 +209,9 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
                   controlsRef={controlsRef}
                 />
               </Bounds>
-              <Environment preset="studio" />
+              {lightingMode === "studio" ? (
+                <Environment preset="studio" />
+              ) : null}
             </Suspense>
           </ModelErrorBoundary>
           <OrbitControls
@@ -183,17 +222,20 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
             maxDistance={12}
             panSpeed={0.8}
             zoomSpeed={0.8}
+            autoRotate={autoRotate}
+            autoRotateSpeed={0.8}
           />
         </Canvas>
       ) : (
         <div className="grid h-full place-items-center bg-[radial-gradient(circle_at_center,rgba(0,126,150,0.11),transparent_38%),linear-gradient(180deg,#f4fbff,#e7f4fa)] px-6 text-center dark:bg-[radial-gradient(circle_at_center,rgba(89,243,255,0.12),transparent_38%),linear-gradient(180deg,#0b1726,#050b12)]">
           <div className="bg-background/90 max-w-sm rounded-2xl border border-[var(--paleo-border)] p-5 shadow-[0_0_34px_rgba(0,229,255,0.14)] backdrop-blur">
             <p className="text-primary font-mono text-xs font-semibold tracking-[0.16em] uppercase">
-              Modelo pendiente
+              {hasModelUrl ? "WebGL no disponible" : "Modelo pendiente"}
             </p>
             <p className="text-muted-foreground mt-3 text-sm leading-6">
-              Esta ficha ya está disponible, pero todavía no tiene un archivo 3D
-              publicado para explorar.
+              {hasModelUrl
+                ? "El navegador o dispositivo no permite iniciar el contexto WebGL necesario para el visor 3D."
+                : "Esta ficha ya está disponible, pero todavía no tiene un archivo 3D publicado para explorar."}
             </p>
           </div>
         </div>
@@ -262,6 +304,36 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
       ) : null}
       <div className="bg-background/78 text-muted-foreground pointer-events-none absolute bottom-4 left-4 z-20 rounded-full border border-[var(--paleo-border)] px-3 py-1 font-mono text-[0.62rem] tracking-[0.14em] uppercase shadow-sm backdrop-blur">
         Arrastrar para rotar · Scroll para zoom
+      </div>
+      <div className="bg-background/82 absolute right-4 bottom-4 z-20 flex flex-col gap-2 rounded-2xl border border-[var(--paleo-border)] p-2 shadow-sm backdrop-blur sm:flex-row sm:items-center">
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          onClick={() => setAutoRotate((currentValue) => !currentValue)}
+          disabled={!hasModelUrl || !supportsWebGL}
+          aria-pressed={autoRotate}
+          className="bg-background/70 text-foreground border-[var(--paleo-border)]"
+        >
+          {autoRotate ? "Pausar giro" : "Auto-giro"}
+        </Button>
+        <label className="text-muted-foreground flex items-center gap-2 font-mono text-[0.62rem] font-semibold tracking-[0.14em] uppercase">
+          Luz
+          <select
+            value={lightingMode}
+            onChange={(event) =>
+              setLightingMode(event.target.value as LightingMode)
+            }
+            disabled={!hasModelUrl || !supportsWebGL}
+            className="bg-background/70 text-foreground focus:border-primary/75 focus:ring-primary/20 h-7 rounded-lg border border-[var(--paleo-border)] px-2 text-xs outline-none focus:ring-2"
+          >
+            {lightingOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </label>
       </div>
     </section>
   );

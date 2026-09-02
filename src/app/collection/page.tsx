@@ -1,4 +1,7 @@
+import { Suspense } from "react";
+
 import { CollectionFilters } from "@/components/collection-filters";
+import { Skeleton } from "@/components/ui/skeleton";
 import { specimens } from "@/data/specimens";
 
 export const metadata = {
@@ -25,8 +28,23 @@ export default function CollectionPage() {
         </div>
       </section>
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <CollectionFilters specimens={specimens} />
+        <Suspense fallback={<CollectionFiltersFallback />}>
+          <CollectionFilters specimens={specimens} />
+        </Suspense>
       </section>
     </main>
+  );
+}
+
+function CollectionFiltersFallback() {
+  return (
+    <div className="space-y-8">
+      <Skeleton className="h-72 rounded-3xl" />
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {Array.from({ length: 6 }).map((_, index) => (
+          <Skeleton key={index} className="h-96 rounded-2xl" />
+        ))}
+      </div>
+    </div>
   );
 }
