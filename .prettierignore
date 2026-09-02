@@ -5,3 +5,7 @@ build
 coverage
 package-lock.json
 AGENTS.md
+
+# Playwright
+test-results/
+playwright-report/
