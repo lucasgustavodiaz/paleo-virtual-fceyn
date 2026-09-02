@@ -104,6 +104,8 @@
   --paleo-title-mid: #007f96;
   --paleo-title-to: #008f77;
   --paleo-selection-color: #04111d;
+  --logo-text-primary: #070003;
+  --logo-text-secondary: #535353;
 }
 
 .dark {
@@ -148,6 +150,8 @@
   --paleo-title-mid: #b9fbff;
   --paleo-title-to: #00ffc6;
   --paleo-selection-color: #f8ffff;
+  --logo-text-primary: #f3ffff;
+  --logo-text-secondary: #9db8c2;
 }
 
 @layer base {

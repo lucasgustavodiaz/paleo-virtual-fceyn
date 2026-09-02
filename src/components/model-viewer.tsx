@@ -18,7 +18,6 @@ import {
   OrbitControls,
   useBounds,
   useGLTF,
-  useProgress,
 } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { HelpCircle, Maximize2, Minimize2, RotateCcw } from "lucide-react";
@@ -41,8 +40,6 @@ type ModelErrorBoundaryState = {
 };
 
 function LoadingModel() {
-  const { progress } = useProgress();
-
   return (
     <Html center>
       <div className="border-primary/30 bg-background/92 text-foreground w-60 rounded-2xl border p-4 text-center text-sm shadow-[0_0_34px_rgba(0,229,255,0.18)] backdrop-blur">
@@ -50,9 +47,7 @@ function LoadingModel() {
         <p className="text-primary font-mono text-xs font-semibold tracking-[0.16em] uppercase">
           Cargando modelo 3D
         </p>
-        <p className="text-muted-foreground mt-2 text-xs">
-          {Math.round(progress)}%
-        </p>
+        <p className="text-muted-foreground mt-2 text-xs">Preparando escena</p>
       </div>
     </Html>
   );
@@ -151,7 +146,7 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
     <section
       ref={viewerRef}
       aria-label={label}
-      className="paleo-corners fullscreen:h-dvh fullscreen:min-h-dvh fullscreen:max-h-none fullscreen:rounded-none relative h-[clamp(330px,60dvh,580px)] overflow-hidden rounded-3xl border border-[var(--paleo-border)] bg-[radial-gradient(circle_at_50%_35%,rgba(0,229,255,0.14),transparent_18rem),linear-gradient(180deg,#07111f,#050b12)] shadow-[0_30px_90px_rgba(0,0,0,0.42)] sm:h-[clamp(400px,62dvh,620px)] lg:h-[clamp(460px,62dvh,660px)]"
+      className="paleo-corners fullscreen:h-dvh fullscreen:min-h-dvh fullscreen:max-h-none fullscreen:rounded-none relative h-[clamp(330px,60dvh,580px)] overflow-hidden rounded-3xl border border-[var(--paleo-border)] bg-[radial-gradient(circle_at_50%_35%,rgba(0,126,150,0.13),transparent_18rem),linear-gradient(180deg,#f4fbff,#e7f4fa)] shadow-[0_30px_90px_rgba(15,48,70,0.14)] sm:h-[clamp(400px,62dvh,620px)] lg:h-[clamp(460px,62dvh,660px)] dark:bg-[radial-gradient(circle_at_50%_35%,rgba(0,229,255,0.14),transparent_18rem),linear-gradient(180deg,#07111f,#050b12)] dark:shadow-[0_30px_90px_rgba(0,0,0,0.42)]"
     >
       <div className="pointer-events-none absolute inset-0 z-10 border border-white/5" />
       <div className="border-primary/35 bg-background/70 text-primary pointer-events-none absolute top-4 left-4 z-20 rounded-full border px-3 py-1 font-mono text-[0.62rem] font-bold tracking-[0.18em] uppercase backdrop-blur">
@@ -161,10 +156,12 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
         <Canvas
           camera={{ position: [3, 2, 5], fov: 45 }}
           gl={{ antialias: true }}
-          className="bg-[radial-gradient(circle_at_center,rgba(89,243,255,0.12),transparent_38%),linear-gradient(180deg,#0b1726,#050b12)]"
+          className="bg-[radial-gradient(circle_at_center,rgba(0,126,150,0.11),transparent_38%),linear-gradient(180deg,#f4fbff,#e7f4fa)] dark:bg-[radial-gradient(circle_at_center,rgba(89,243,255,0.12),transparent_38%),linear-gradient(180deg,#0b1726,#050b12)]"
         >
           <ambientLight intensity={0.8} />
+          <hemisphereLight args={["#dffbff", "#102235", 1.2]} />
           <directionalLight position={[4, 6, 4]} intensity={1.8} />
+          <directionalLight position={[-3, 2, -4]} intensity={0.65} />
           <ModelErrorBoundary>
             <Suspense fallback={<LoadingModel />}>
               <Bounds fit clip observe margin={1.25}>
@@ -188,7 +185,7 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
           />
         </Canvas>
       ) : (
-        <div className="grid h-full place-items-center bg-[radial-gradient(circle_at_center,rgba(89,243,255,0.12),transparent_38%),linear-gradient(180deg,#0b1726,#050b12)] px-6 text-center">
+        <div className="grid h-full place-items-center bg-[radial-gradient(circle_at_center,rgba(0,126,150,0.11),transparent_38%),linear-gradient(180deg,#f4fbff,#e7f4fa)] px-6 text-center dark:bg-[radial-gradient(circle_at_center,rgba(89,243,255,0.12),transparent_38%),linear-gradient(180deg,#0b1726,#050b12)]">
           <div className="bg-background/90 max-w-sm rounded-2xl border border-[var(--paleo-border)] p-5 shadow-[0_0_34px_rgba(0,229,255,0.14)] backdrop-blur">
             <p className="text-primary font-mono text-xs font-semibold tracking-[0.16em] uppercase">
               Modelo pendiente
