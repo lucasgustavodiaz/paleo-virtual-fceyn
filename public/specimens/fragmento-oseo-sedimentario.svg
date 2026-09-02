@@ -1,9 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
   <title id="title">Miniatura de fragmento óseo sedimentario</title>
-  <desc id="desc">Ilustración abstracta de un fragmento óseo sobre sedimento.</desc>
-  <rect width="800" height="600" fill="#ebe4d8"/>
-  <path d="M250 165c72-35 185-12 243 54 54 61 50 146-12 179-75 41-190 1-241-75-43-64-35-135 10-158Z" fill="#92765b"/>
-  <path d="M310 222c48-12 103 4 136 40 35 39 33 83-5 99-45 19-111-7-142-56-26-41-20-74 11-83Z" fill="#c9b89e"/>
-  <path d="M145 452c117-45 236-54 358-27 64 14 116 34 152 59" fill="none" stroke="#baa88e" stroke-width="36" stroke-linecap="round"/>
-  <circle cx="593" cy="177" r="102" fill="#d4c3aa" opacity="0.58"/>
+  <desc id="desc">Ilustración de fragmento óseo escaneado sobre placa técnica.</desc>
+  <defs>
+    <style>
+      :root{--bg:#edf8fc;--panel:#dff1f7;--line:#007f96;--glow:#008f77;--bone:#214256;--soft:#638395;--grid:rgba(0,126,150,.14)}
+      @media (prefers-color-scheme: dark){:root{--bg:#050b12;--panel:#071725;--line:#59f3ff;--glow:#00ffc6;--bone:#d5fbff;--soft:#7fe6ef;--grid:rgba(89,243,255,.16)}}
+    </style>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M44 0H0v44" fill="none" stroke="var(--grid)"/></pattern>
+    <filter id="glow" x="-35%" y="-35%" width="170%" height="170%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="800" height="600" fill="var(--bg)"/>
+  <rect width="800" height="600" fill="url(#grid)"/>
+  <circle cx="590" cy="170" r="150" fill="var(--line)" opacity=".1"/>
+  <rect x="92" y="80" width="616" height="424" rx="32" fill="var(--panel)" opacity=".58" stroke="var(--line)" stroke-opacity=".28"/>
+  <g filter="url(#glow)" fill="none" stroke-linejoin="round">
+    <path d="M250 165c72-35 185-12 243 54 54 61 50 146-12 179-75 41-190 1-241-75-43-64-35-135 10-158Z" stroke="var(--bone)" stroke-width="28"/>
+    <path d="M310 222c48-12 103 4 136 40 35 39 33 83-5 99-45 19-111-7-142-56-26-41-20-74 11-83Z" stroke="var(--soft)" stroke-width="18" opacity=".75"/>
+    <path d="M145 452c117-45 236-54 358-27 64 14 116 34 152 59" stroke="var(--glow)" stroke-width="11" stroke-linecap="round" opacity=".58"/>
+  </g>
+  <path d="M128 118h86M128 118v86M672 482h-86M672 482v-86" fill="none" stroke="var(--glow)" stroke-width="4" stroke-linecap="round" opacity=".75"/>
 </svg>

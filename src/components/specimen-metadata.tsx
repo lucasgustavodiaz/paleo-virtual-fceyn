@@ -66,19 +66,27 @@ function getVisibleFields(specimen: Specimen, fields: MetadataField[]) {
 
 export function SpecimenMetadata({ specimen }: SpecimenMetadataProps) {
   return (
-    <aside className="rounded-2xl border bg-white p-5 shadow-sm lg:sticky lg:top-24 dark:border-stone-800 dark:bg-stone-900">
-      <div className="space-y-3">
-        <Badge variant="secondary">{specimen.category}</Badge>
+    <aside className="paleo-panel rounded-3xl p-5 lg:sticky lg:top-24">
+      <div className="space-y-4">
+        <div className="flex items-center justify-between gap-3">
+          <Badge variant="default">{specimen.category}</Badge>
+          <span className="text-muted-foreground font-mono text-[0.62rem] tracking-[0.16em] uppercase">
+            Ficha científica
+          </span>
+        </div>
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-stone-950 dark:text-stone-50">
+          <h1 className="text-foreground text-2xl font-semibold tracking-[-0.03em]">
             {specimen.name}
           </h1>
-          <p className="text-muted-foreground mt-3 text-sm leading-6">
+          <p className="text-primary mt-2 font-mono text-xs tracking-[0.14em] uppercase">
+            {specimen.inventoryNumber}
+          </p>
+          <p className="text-muted-foreground mt-4 text-sm leading-6">
             {specimen.description}
           </p>
         </div>
       </div>
-      <div className="mt-5 space-y-6">
+      <div className="mt-6 space-y-6">
         {metadataSections.map((section, sectionIndex) => {
           const visibleFields = getVisibleFields(specimen, section.fields);
           const sectionId = `metadata-section-${sectionIndex}`;
@@ -89,20 +97,23 @@ export function SpecimenMetadata({ specimen }: SpecimenMetadataProps) {
 
           return (
             <section key={section.title} aria-labelledby={sectionId}>
-              <Separator className="mb-4" />
+              <Separator className="mb-4 bg-[var(--paleo-border)]" />
               <h2
                 id={sectionId}
-                className="text-sm font-semibold tracking-[0.18em] text-stone-500 uppercase dark:text-stone-400"
+                className="text-primary font-mono text-[0.68rem] font-semibold tracking-[0.2em] uppercase"
               >
                 {section.title}
               </h2>
-              <dl className="mt-4 space-y-4">
+              <dl className="mt-4 grid gap-3">
                 {visibleFields.map(({ label, key }) => (
-                  <div key={key}>
-                    <dt className="text-xs font-semibold tracking-[0.18em] text-stone-500 uppercase dark:text-stone-400">
+                  <div
+                    key={key}
+                    className="bg-secondary/35 rounded-2xl border border-[var(--paleo-border)] p-3"
+                  >
+                    <dt className="text-muted-foreground font-mono text-[0.62rem] font-semibold tracking-[0.16em] uppercase">
                       {label}
                     </dt>
-                    <dd className="mt-1 text-sm leading-6 break-words text-stone-800 dark:text-stone-200">
+                    <dd className="text-foreground/86 mt-1 text-sm leading-6 break-words">
                       {specimen[key]}
                     </dd>
                   </div>

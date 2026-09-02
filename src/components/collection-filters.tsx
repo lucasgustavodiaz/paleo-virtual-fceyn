@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { Search, SlidersHorizontal } from "lucide-react";
+
 import { SpecimenCard } from "@/components/specimen-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -48,7 +50,7 @@ function getCategoryCounts(specimens: Specimen[]) {
 }
 
 const controlClassName =
-  "h-11 w-full rounded-xl border border-stone-200 bg-white px-3 text-sm text-stone-950 shadow-sm outline-none transition placeholder:text-stone-400 focus:border-stone-400 focus:ring-3 focus:ring-stone-300/40 dark:border-stone-600 dark:bg-stone-900 dark:text-stone-50 dark:placeholder:text-stone-400 dark:focus:border-amber-300/70 dark:focus:ring-amber-300/15";
+  "h-12 w-full rounded-xl border border-[var(--paleo-border)] bg-background/82 px-3 font-mono text-sm text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] outline-none transition placeholder:text-muted-foreground/72 focus:border-primary/75 focus:ring-3 focus:ring-primary/14";
 
 export function CollectionFilters({ specimens }: CollectionFiltersProps) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -114,42 +116,49 @@ export function CollectionFilters({ specimens }: CollectionFiltersProps) {
   }
 
   return (
-    <div className="mt-10 space-y-8">
-      <Card className="border-stone-200 bg-white/95 shadow-sm dark:border-stone-700 dark:bg-stone-950 dark:ring-1 dark:ring-stone-700/80">
+    <div className="space-y-8">
+      <Card className="paleo-panel py-0">
         <CardContent className="space-y-5 p-4 sm:p-5">
-          <div className="flex flex-col gap-3 border-b border-stone-200 pb-5 sm:flex-row sm:items-start sm:justify-between dark:border-stone-800">
+          <div className="flex flex-col gap-3 border-b border-[var(--paleo-border)] pb-5 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <p className="text-xs font-semibold tracking-[0.2em] text-stone-500 uppercase dark:text-stone-400">
+              <p className="paleo-kicker flex items-center gap-2">
+                <SlidersHorizontal aria-hidden="true" className="size-3.5" />
                 Explorar catálogo
               </p>
-              <h2 className="mt-1 text-xl font-semibold tracking-tight text-stone-950 dark:text-stone-50">
+              <h2 className="text-foreground mt-2 text-2xl font-semibold tracking-tight">
                 Buscar y filtrar piezas
               </h2>
             </div>
             <p
-              className="rounded-full bg-stone-100 px-3 py-1 text-sm font-medium text-stone-700 dark:bg-stone-800 dark:text-stone-100"
+              className="border-primary/30 bg-primary/10 text-primary rounded-full border px-3 py-1 font-mono text-xs font-semibold tracking-[0.12em] uppercase"
               aria-live="polite"
             >
               {filteredSpecimens.length} / {specimens.length} visibles
             </p>
           </div>
 
-          <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4 dark:border-stone-700 dark:bg-stone-900/70">
+          <div className="bg-secondary/35 rounded-2xl border border-[var(--paleo-border)] p-4">
             <div className="flex flex-col gap-3">
               <label
                 htmlFor="collection-search"
-                className="text-sm font-semibold text-stone-800 dark:text-stone-100"
+                className="text-muted-foreground font-mono text-xs font-semibold tracking-[0.16em] uppercase"
               >
                 Buscar en la colección
               </label>
-              <input
-                id="collection-search"
-                type="search"
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Nombre, inventario, procedencia, descripción..."
-                className={controlClassName}
-              />
+              <div className="relative">
+                <Search
+                  aria-hidden="true"
+                  className="text-primary pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2"
+                />
+                <input
+                  id="collection-search"
+                  type="search"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Nombre, inventario, procedencia, descripción..."
+                  className={`${controlClassName} pl-10`}
+                />
+              </div>
             </div>
           </div>
 
@@ -158,7 +167,7 @@ export function CollectionFilters({ specimens }: CollectionFiltersProps) {
               <div key={key} className="flex flex-col gap-3">
                 <label
                   htmlFor={`collection-filter-${key}`}
-                  className="text-sm font-semibold text-stone-800 dark:text-stone-100"
+                  className="text-muted-foreground font-mono text-xs font-semibold tracking-[0.16em] uppercase"
                 >
                   {label}
                 </label>
@@ -180,7 +189,7 @@ export function CollectionFilters({ specimens }: CollectionFiltersProps) {
             <div className="flex flex-col gap-3">
               <label
                 htmlFor="collection-sort"
-                className="text-sm font-semibold text-stone-800 dark:text-stone-100"
+                className="text-muted-foreground font-mono text-xs font-semibold tracking-[0.16em] uppercase"
               >
                 Ordenar por
               </label>
@@ -197,8 +206,8 @@ export function CollectionFilters({ specimens }: CollectionFiltersProps) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 border-t border-stone-200 pt-5 sm:flex-row sm:items-center sm:justify-between dark:border-stone-800">
-            <p className="text-muted-foreground text-sm dark:text-stone-400">
+          <div className="flex flex-col gap-4 border-t border-[var(--paleo-border)] pt-5 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-muted-foreground text-sm">
               Combiná búsqueda, filtros y ordenamiento para recorrer el
               catálogo.
             </p>
@@ -208,7 +217,7 @@ export function CollectionFilters({ specimens }: CollectionFiltersProps) {
               size="lg"
               onClick={clearFilters}
               disabled={!hasActiveFilters}
-              className="h-11 dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 dark:hover:bg-stone-800"
+              className="h-11"
             >
               Limpiar filtros
             </Button>
@@ -221,7 +230,7 @@ export function CollectionFilters({ specimens }: CollectionFiltersProps) {
               <Badge
                 key={category}
                 variant="secondary"
-                className="dark:bg-stone-800 dark:text-stone-100 dark:ring-1 dark:ring-stone-700"
+                className="border-primary/20 bg-primary/8 text-primary"
               >
                 {category}: {count}
               </Badge>
@@ -237,8 +246,10 @@ export function CollectionFilters({ specimens }: CollectionFiltersProps) {
           ))}
         </div>
       ) : (
-        <div className="rounded-2xl border border-dashed bg-white/75 p-8 text-center dark:border-stone-800 dark:bg-stone-900/70">
-          <h2 className="text-lg font-semibold">Sin resultados</h2>
+        <div className="paleo-panel rounded-2xl border border-dashed p-8 text-center">
+          <h2 className="text-foreground text-lg font-semibold">
+            Sin resultados
+          </h2>
           <p className="text-muted-foreground mx-auto mt-2 max-w-xl text-sm leading-6">
             No hay objetos que coincidan con los filtros seleccionados. Probá
             ampliar la búsqueda o limpiar los filtros.

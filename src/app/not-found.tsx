@@ -6,14 +6,12 @@ import { cn } from "@/lib/utils";
 
 export default function NotFound() {
   return (
-    <main className="flex flex-1 items-center bg-stone-50 dark:bg-stone-950">
+    <main className="bg-background flex flex-1 items-center">
       <section className="mx-auto w-full max-w-3xl px-4 py-16 text-center sm:px-6 lg:px-8">
-        <Card className="border-stone-200 bg-white/90 shadow-sm dark:border-stone-800 dark:bg-stone-900">
+        <Card className="paleo-panel py-0">
           <CardContent className="p-8 sm:p-10">
-            <p className="text-sm font-semibold tracking-[0.22em] text-stone-500 uppercase dark:text-stone-400">
-              404
-            </p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-stone-950 sm:text-5xl dark:text-stone-50">
+            <p className="paleo-kicker">404</p>
+            <h1 className="text-foreground mt-3 text-3xl font-semibold tracking-[-0.04em] sm:text-5xl">
               Página no encontrada
             </h1>
             <p className="text-muted-foreground mx-auto mt-5 max-w-xl text-base leading-7">

@@ -29,7 +29,7 @@ export function MobileNavigation() {
       <ThemeToggle />
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger
-          className="focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-lg border border-stone-200 bg-white/80 text-stone-800 shadow-sm transition hover:bg-stone-100 focus-visible:ring-2 focus-visible:outline-none dark:border-stone-700 dark:bg-stone-900 dark:text-stone-100 dark:hover:bg-amber-400/12 dark:hover:text-amber-100"
+          className="bg-secondary/65 text-primary hover:border-primary/60 hover:bg-primary/12 focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-xl border border-[var(--paleo-border)] shadow-[0_0_26px_rgba(0,229,255,0.08)] transition focus-visible:ring-2 focus-visible:outline-none"
           aria-label="Abrir menú de navegación"
         >
           <Menu aria-hidden="true" className="size-4" />
@@ -50,7 +50,7 @@ export function MobileNavigation() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="focus-visible:ring-ring rounded-xl border border-transparent px-3 py-3 text-base font-semibold text-stone-800 transition hover:bg-stone-100 hover:text-stone-950 focus-visible:ring-2 focus-visible:outline-none dark:text-stone-50 dark:hover:border-stone-700 dark:hover:bg-amber-400/12 dark:hover:text-amber-100"
+                className="hover:border-primary/35 hover:bg-primary/10 hover:text-primary focus-visible:ring-ring text-muted-foreground rounded-xl border border-transparent px-3 py-3 font-mono text-sm font-semibold tracking-[0.12em] uppercase transition focus-visible:ring-2 focus-visible:outline-none"
               >
                 {item.label}
               </Link>

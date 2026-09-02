@@ -12,28 +12,34 @@ const navigationItems = [
 
 export function SiteHeader() {
   return (
-    <header className="bg-background/90 supports-[backdrop-filter]:bg-background/75 sticky top-0 z-50 border-b backdrop-blur dark:border-stone-800 dark:bg-stone-950/92">
+    <header className="bg-background/86 supports-[backdrop-filter]:bg-background/76 sticky top-0 z-50 border-b border-[var(--paleo-border)] backdrop-blur-xl">
+      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-[var(--paleo-cyan)]/45 to-transparent" />
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4">
           <Logo />
           <Link
             href="/"
-            className="hidden translate-y-1 border-l border-stone-200 pl-4 text-lg font-semibold tracking-tight text-stone-950 sm:flex sm:min-h-12 sm:items-center dark:border-stone-800 dark:text-stone-50"
+            className="hidden translate-y-1 border-l border-[var(--paleo-border)] pl-4 sm:flex sm:min-h-12 sm:flex-col sm:justify-center"
             aria-label="Paleo Virtual FCEyN"
           >
-            Paleo Virtual
+            <span className="font-mono text-[0.62rem] font-bold tracking-[0.26em] text-[var(--paleo-aqua)] uppercase">
+              Repositorio 3D
+            </span>
+            <span className="text-foreground text-lg font-semibold tracking-tight">
+              Paleo Virtual
+            </span>
           </Link>
         </div>
         <nav
           aria-label="Navegación principal"
           className="hidden items-center gap-3 sm:flex"
         >
-          <div className="flex items-center rounded-full border border-stone-200 bg-white/80 p-1 shadow-sm dark:border-stone-700 dark:bg-stone-900 dark:shadow-black/20">
+          <div className="bg-secondary/70 flex items-center rounded-full border border-[var(--paleo-border)] p-1 shadow-[0_0_32px_rgba(0,229,255,0.08)]">
             {navigationItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`${item.className} focus-visible:ring-ring h-9 items-center rounded-full px-3 text-sm font-semibold text-stone-700 transition hover:bg-stone-100 hover:text-stone-950 focus-visible:ring-2 focus-visible:outline-none sm:px-4 dark:text-stone-100 dark:hover:bg-amber-400/12 dark:hover:text-amber-100`}
+                className={`${item.className} hover:bg-primary/12 hover:text-primary focus-visible:ring-ring text-muted-foreground h-9 items-center rounded-full px-3 font-mono text-xs font-semibold tracking-[0.12em] uppercase transition focus-visible:ring-2 focus-visible:outline-none sm:px-4`}
               >
                 {item.label}
               </Link>

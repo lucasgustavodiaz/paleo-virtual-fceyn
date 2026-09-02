@@ -8,21 +8,23 @@ export const metadata = {
 
 export default function CollectionPage() {
   return (
-    <main className="flex-1 bg-stone-50 dark:bg-stone-950">
-      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="max-w-3xl">
-          <p className="text-sm font-semibold tracking-[0.22em] text-stone-500 uppercase">
-            Colección
-          </p>
-          <h1 className="mt-3 text-3xl font-semibold tracking-tight text-stone-950 sm:text-5xl dark:text-stone-50">
-            Objetos 3D disponibles
-          </h1>
-          <p className="text-muted-foreground mt-4 text-base leading-7">
-            Catálogo inicial con piezas de ejemplo. La estructura está preparada
-            para reemplazar estos registros por modelos, miniaturas y metadatos
-            científicos reales del repositorio.
-          </p>
+    <main className="bg-background flex-1">
+      <section className="relative overflow-hidden border-b border-[var(--paleo-border)]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_18%,rgba(0,229,255,0.13),transparent_24rem),radial-gradient(circle_at_82%_12%,rgba(0,255,198,0.08),transparent_22rem)]" />
+        <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <p className="paleo-kicker">Archivo científico digital</p>
+            <h1 className="text-foreground mt-3 text-4xl font-semibold tracking-[-0.04em] sm:text-6xl">
+              Colección de objetos 3D
+            </h1>
+            <p className="text-muted-foreground mt-5 text-lg leading-8">
+              Navegá especímenes, filtrá por criterios curatoriales y accedé a
+              modelos interactivos preparados para exploración web.
+            </p>
+          </div>
         </div>
+      </section>
+      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <CollectionFilters specimens={specimens} />
       </section>
     </main>

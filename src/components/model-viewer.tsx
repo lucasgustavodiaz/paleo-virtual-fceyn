@@ -45,10 +45,12 @@ function LoadingModel() {
 
   return (
     <Html center>
-      <div className="w-52 rounded-xl border bg-white/95 p-4 text-center text-sm shadow-lg">
-        <Skeleton className="mb-3 h-2 w-full" />
-        <p className="font-medium text-stone-800">Cargando modelo 3D</p>
-        <p className="text-muted-foreground mt-1 text-xs">
+      <div className="border-primary/30 bg-background/92 text-foreground w-60 rounded-2xl border p-4 text-center text-sm shadow-[0_0_34px_rgba(0,229,255,0.18)] backdrop-blur">
+        <Skeleton className="mb-3 h-1.5 w-full" />
+        <p className="text-primary font-mono text-xs font-semibold tracking-[0.16em] uppercase">
+          Cargando modelo 3D
+        </p>
+        <p className="text-muted-foreground mt-2 text-xs">
           {Math.round(progress)}%
         </p>
       </div>
@@ -96,8 +98,8 @@ class ModelErrorBoundary extends Component<
     if (this.state.hasError) {
       return (
         <Html center>
-          <div className="max-w-xs rounded-xl border border-red-200 bg-white p-4 text-center text-sm shadow-lg">
-            <p className="font-semibold text-red-700">
+          <div className="border-destructive/40 bg-background/95 max-w-xs rounded-2xl border p-4 text-center text-sm shadow-lg backdrop-blur">
+            <p className="text-destructive font-semibold">
               No se pudo cargar el modelo.
             </p>
             <p className="text-muted-foreground mt-2">
@@ -148,12 +150,16 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
     <section
       ref={viewerRef}
       aria-label={label}
-      className="fullscreen:h-dvh fullscreen:min-h-dvh fullscreen:max-h-none fullscreen:rounded-none relative h-[clamp(330px,60dvh,580px)] overflow-hidden rounded-2xl border bg-stone-100 shadow-sm sm:h-[clamp(400px,62dvh,620px)] lg:h-[clamp(460px,62dvh,660px)] dark:border-stone-800 dark:bg-stone-900"
+      className="paleo-corners fullscreen:h-dvh fullscreen:min-h-dvh fullscreen:max-h-none fullscreen:rounded-none relative h-[clamp(330px,60dvh,580px)] overflow-hidden rounded-3xl border border-[var(--paleo-border)] bg-[radial-gradient(circle_at_50%_35%,rgba(0,229,255,0.14),transparent_18rem),linear-gradient(180deg,#07111f,#050b12)] shadow-[0_30px_90px_rgba(0,0,0,0.42)] sm:h-[clamp(400px,62dvh,620px)] lg:h-[clamp(460px,62dvh,660px)]"
     >
+      <div className="pointer-events-none absolute inset-0 z-10 border border-white/5" />
+      <div className="border-primary/35 bg-background/70 text-primary pointer-events-none absolute top-4 left-4 z-20 rounded-full border px-3 py-1 font-mono text-[0.62rem] font-bold tracking-[0.18em] uppercase backdrop-blur">
+        Modelo 3D
+      </div>
       <Canvas
         camera={{ position: [3, 2, 5], fov: 45 }}
         gl={{ antialias: true }}
-        className="bg-gradient-to-b from-stone-50 to-stone-200 dark:from-stone-900 dark:to-stone-800"
+        className="bg-[radial-gradient(circle_at_center,rgba(89,243,255,0.12),transparent_38%),linear-gradient(180deg,#0b1726,#050b12)]"
       >
         <ambientLight intensity={0.8} />
         <directionalLight position={[4, 6, 4]} intensity={1.8} />
@@ -179,14 +185,14 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
           zoomSpeed={0.8}
         />
       </Canvas>
-      <div className="absolute top-4 right-4 flex gap-2">
+      <div className="absolute top-4 right-4 z-20 flex flex-wrap justify-end gap-2 pl-28">
         <Button
           type="button"
           variant="secondary"
           size="sm"
           onClick={() => setResetSignal((currentSignal) => currentSignal + 1)}
           aria-label="Restablecer cámara"
-          className="bg-white/90 shadow-sm dark:bg-stone-950/90"
+          className="bg-background/78 hover:text-primary text-foreground border-[var(--paleo-border)] backdrop-blur"
         >
           <RotateCcw aria-hidden="true" />
           Reset
@@ -201,7 +207,7 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
               ? "Salir de pantalla completa"
               : "Ver en pantalla completa"
           }
-          className="bg-white/90 shadow-sm dark:bg-stone-950/90"
+          className="bg-background/78 hover:text-primary text-foreground border-[var(--paleo-border)] backdrop-blur"
         >
           {isFullscreen ? (
             <Minimize2 aria-hidden="true" />
@@ -217,7 +223,7 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
           onClick={() => setShowHelp((currentValue) => !currentValue)}
           aria-expanded={showHelp}
           aria-controls="model-viewer-help"
-          className="bg-white/90 shadow-sm dark:bg-stone-950/90"
+          className="bg-background/78 hover:text-primary text-foreground border-[var(--paleo-border)] backdrop-blur"
         >
           <HelpCircle aria-hidden="true" />
           Ayuda
@@ -226,9 +232,9 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
       {showHelp ? (
         <div
           id="model-viewer-help"
-          className="absolute right-4 bottom-14 left-4 max-w-md rounded-xl border bg-white/95 p-4 text-sm leading-6 text-stone-700 shadow-lg sm:left-auto dark:border-stone-800 dark:bg-stone-950/95 dark:text-stone-300"
+          className="bg-background/95 text-muted-foreground absolute right-4 bottom-16 left-4 z-20 max-w-md rounded-2xl border border-[var(--paleo-border)] p-4 text-sm leading-6 shadow-[0_0_34px_rgba(0,229,255,0.12)] backdrop-blur sm:left-auto"
         >
-          <p className="font-semibold text-stone-900 dark:text-stone-50">
+          <p className="text-primary font-mono text-xs font-semibold tracking-[0.16em] uppercase">
             Controles del modelo
           </p>
           <ul className="mt-2 space-y-1">
@@ -239,8 +245,8 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
           </ul>
         </div>
       ) : null}
-      <div className="pointer-events-none absolute bottom-4 left-4 rounded-full bg-white/90 px-3 py-1 text-xs text-stone-600 shadow-sm dark:bg-stone-950/90 dark:text-stone-300">
-        Rotar, desplazar y hacer zoom con mouse o gestos táctiles
+      <div className="bg-background/78 text-muted-foreground pointer-events-none absolute bottom-4 left-4 z-20 rounded-full border border-[var(--paleo-border)] px-3 py-1 font-mono text-[0.62rem] tracking-[0.14em] uppercase shadow-sm backdrop-blur">
+        Arrastrar para rotar · Scroll para zoom
       </div>
     </section>
   );

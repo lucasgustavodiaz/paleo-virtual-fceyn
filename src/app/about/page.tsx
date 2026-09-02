@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { Microscope, Network, ShieldCheck } from "lucide-react";
+
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
@@ -16,6 +18,8 @@ const goals = [
   "Construir una base técnica mantenible para incorporar metadatos curatoriales reales.",
 ];
 
+const goalIcons = [Microscope, Network, ShieldCheck];
+
 const principles = [
   "Accesibilidad para usuarios no técnicos.",
   "Metadatos claros y trazables.",
@@ -25,17 +29,17 @@ const principles = [
 
 export default function AboutPage() {
   return (
-    <main className="flex-1">
-      <section className="border-b bg-gradient-to-br from-stone-100 via-white to-amber-50 dark:from-stone-950 dark:via-stone-950 dark:to-stone-900">
-        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <main className="bg-background flex-1">
+      <section className="relative overflow-hidden border-b border-[var(--paleo-border)]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_18%,rgba(0,229,255,0.14),transparent_24rem),radial-gradient(circle_at_78%_42%,rgba(0,255,198,0.08),transparent_24rem)]" />
+        <div className="paleo-scanlines absolute inset-0 opacity-25" />
+        <div className="relative mx-auto max-w-7xl px-4 py-18 sm:px-6 lg:px-8">
           <div className="max-w-4xl">
-            <p className="text-sm font-semibold tracking-[0.22em] text-stone-500 uppercase">
-              Acerca del proyecto
-            </p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-stone-950 sm:text-5xl dark:text-stone-50">
+            <p className="paleo-kicker">Acerca del proyecto</p>
+            <h1 className="text-foreground mt-4 text-4xl font-semibold tracking-[-0.04em] sm:text-6xl">
               Un repositorio 3D para educación, investigación y divulgación
             </h1>
-            <p className="mt-6 text-base leading-8 text-stone-700 dark:text-stone-300">
+            <p className="text-muted-foreground mt-6 max-w-3xl text-lg leading-8">
               Esta primera versión prioriza una experiencia clara y accesible:
               colección navegable, fichas descriptivas y visualización 3D en el
               navegador. La arquitectura queda preparada para incorporar modelos
@@ -63,35 +67,41 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-      <section className="mx-auto grid max-w-7xl gap-6 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
+      <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
         <div>
-          <h2 className="text-2xl font-semibold tracking-tight text-stone-950 dark:text-stone-50">
+          <p className="paleo-kicker">Misión</p>
+          <h2 className="text-foreground mt-2 text-3xl font-semibold tracking-[-0.035em]">
             Objetivos
           </h2>
           <div className="mt-5 grid gap-4">
-            {goals.map((goal) => (
-              <Card
-                key={goal}
-                className="border-stone-200 bg-white/80 dark:border-stone-800 dark:bg-stone-900/70"
-              >
-                <CardContent className="p-4 text-sm leading-6 text-stone-700 dark:text-stone-300">
-                  {goal}
-                </CardContent>
-              </Card>
-            ))}
+            {goals.map((goal, index) => {
+              const Icon = goalIcons[index];
+
+              return (
+                <Card key={goal} className="paleo-panel py-0">
+                  <CardContent className="text-muted-foreground flex gap-4 p-5 text-sm leading-6">
+                    <div className="border-primary/30 bg-primary/10 text-primary grid size-10 shrink-0 place-items-center rounded-xl border">
+                      <Icon aria-hidden="true" className="size-5" />
+                    </div>
+                    {goal}
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
         <div>
-          <h2 className="text-2xl font-semibold tracking-tight text-stone-950 dark:text-stone-50">
+          <p className="paleo-kicker">Sistema visual</p>
+          <h2 className="text-foreground mt-2 text-3xl font-semibold tracking-[-0.035em]">
             Criterios de diseño
           </h2>
           <div className="mt-5 grid gap-4">
             {principles.map((principle) => (
               <Card
                 key={principle}
-                className="border-stone-200 bg-white/80 dark:border-stone-800 dark:bg-stone-900/70"
+                className="bg-secondary/35 border-[var(--paleo-border)] py-0"
               >
-                <CardContent className="p-4 text-sm leading-6 text-stone-700 dark:text-stone-300">
+                <CardContent className="text-muted-foreground p-5 text-sm leading-6">
                   {principle}
                 </CardContent>
               </Card>

@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function CollectionLoading() {
   return (
-    <main className="flex-1 bg-stone-50 dark:bg-stone-950">
+    <main className="bg-background flex-1">
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <Skeleton className="h-4 w-28" />
         <Skeleton className="mt-4 h-10 w-full max-w-xl" />

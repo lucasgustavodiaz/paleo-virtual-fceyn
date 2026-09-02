@@ -27,6 +27,9 @@ export const metadata: Metadata = {
   },
   description:
     "Visualizador web para objetos 3D del repositorio paleontológico de la Facultad de Ciencias Exactas y Naturales.",
+  icons: {
+    icon: "/icon.svg",
+  },
   openGraph: {
     title: "Paleo Virtual FCEyN",
     description:
@@ -63,8 +66,8 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="flex min-h-full flex-col bg-stone-50 text-stone-950 dark:bg-stone-950 dark:text-stone-50">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <body className="bg-background text-foreground flex min-h-full flex-col overflow-x-hidden">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <SiteHeader />
           {children}
           <SiteFooter />

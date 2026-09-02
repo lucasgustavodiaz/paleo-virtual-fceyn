@@ -1,19 +1,67 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
-  <title id="title">Composición abstracta de fósiles</title>
-  <desc id="desc">Fondo institucional con siluetas fósiles y texturas sedimentarias.</desc>
+  <title id="title">Composición de fósil escaneado</title>
+  <desc id="desc">Fondo científico con silueta fósil, retícula digital y acentos de escaneo.</desc>
   <defs>
+    <style>
+      :root {
+        --bg-a: #edf8fc;
+        --bg-b: #dbeef5;
+        --line: #007f96;
+        --glow: #008f77;
+        --bone: #25445b;
+        --bone-soft: #557587;
+        --grid: rgba(0, 126, 150, 0.12);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg-a: #050b12;
+          --bg-b: #071725;
+          --line: #59f3ff;
+          --glow: #00ffc6;
+          --bone: #c8fbff;
+          --bone-soft: #76dfea;
+          --grid: rgba(89, 243, 255, 0.16);
+        }
+      }
+    </style>
     <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
-      <stop offset="0" stop-color="#292524"/>
-      <stop offset="0.58" stop-color="#57534e"/>
-      <stop offset="1" stop-color="#d6c7ad"/>
+      <stop offset="0" stop-color="var(--bg-a)"/>
+      <stop offset="1" stop-color="var(--bg-b)"/>
     </linearGradient>
+    <radialGradient id="halo" cx="68%" cy="34%" r="48%">
+      <stop offset="0" stop-color="var(--line)" stop-opacity="0.36"/>
+      <stop offset="0.45" stop-color="var(--glow)" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="var(--glow)" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0v64" fill="none" stroke="var(--grid)" stroke-width="1"/>
+    </pattern>
   </defs>
   <rect width="1600" height="900" fill="url(#bg)"/>
-  <circle cx="1260" cy="210" r="290" fill="#f5efe6" opacity="0.13"/>
-  <circle cx="220" cy="720" r="360" fill="#d8c7ad" opacity="0.12"/>
-  <path d="M230 470c-55-190 91-365 307-396 239-35 501 87 558 266 43 136-49 256-212 287-90 17-160-19-256-4-105 17-164 84-251 55-69-23-121-119-146-208Z" fill="#f8f4ec" opacity="0.13"/>
-  <path d="M492 392c35-66 142-83 216-35 64 43 64 122-4 152-85 37-249-29-212-117Z" fill="#ffffff" opacity="0.16"/>
-  <path d="M864 346c60-56 179-43 231 17 45 52 10 121-68 132-99 16-241-76-163-149Z" fill="#ffffff" opacity="0.15"/>
-  <path d="M162 770c268-93 537-113 806-59 174 35 323 88 448 159" fill="none" stroke="#f5efe6" stroke-width="32" stroke-linecap="round" opacity="0.14"/>
-  <path d="M96 122h440M1034 690h410M892 172h266" stroke="#f5efe6" stroke-width="5" stroke-linecap="round" opacity="0.18"/>
+  <rect width="1600" height="900" fill="url(#grid)" opacity="0.8"/>
+  <rect width="1600" height="900" fill="url(#halo)"/>
+  <g fill="none" stroke="var(--line)" stroke-linecap="round" opacity="0.48">
+    <path d="M104 142h388M996 188h352M1030 686h420" stroke-width="4"/>
+    <path d="M108 142v72M492 142v72M996 188v72M1348 188v72M1030 686v72M1450 686v72" stroke-width="2"/>
+  </g>
+  <g transform="translate(212 102) rotate(-7 478 300)" filter="url(#softGlow)">
+    <path d="M42 364c-42-150 72-289 247-313 194-27 405 69 451 211 35 108-39 204-172 229-73 14-130-15-208-3-86 13-134 66-205 43-56-18-92-76-113-167Z" fill="none" stroke="var(--bone)" stroke-width="26" opacity="0.88"/>
+    <path d="M160 307c24-48 102-62 157-29 48 29 47 88-4 109-63 26-179-23-153-80Z" fill="none" stroke="var(--bone-soft)" stroke-width="18" opacity="0.82"/>
+    <path d="M430 274c45-43 135-33 176 13 36 40 9 93-51 103-75 12-184-60-125-116Z" fill="none" stroke="var(--bone-soft)" stroke-width="18" opacity="0.78"/>
+    <path d="M281 487c72-22 154-19 229 4" fill="none" stroke="var(--line)" stroke-width="18" opacity="0.62"/>
+    <path d="M88 606c222-72 447-88 672-47 144 26 268 66 372 119" fill="none" stroke="var(--glow)" stroke-width="12" opacity="0.32"/>
+  </g>
+  <g stroke="var(--line)" opacity="0.55">
+    <path d="M1240 104v136M1172 172h136" stroke-width="2"/>
+    <circle cx="1240" cy="172" r="88" fill="none" stroke-width="2"/>
+    <circle cx="1240" cy="172" r="8" fill="var(--line)" stroke="none"/>
+  </g>
 </svg>

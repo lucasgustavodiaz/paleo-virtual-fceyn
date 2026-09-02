@@ -21,7 +21,7 @@ function SheetBackdrop({ className, ...props }: Dialog.Backdrop.Props) {
   return (
     <Dialog.Backdrop
       className={cn(
-        "fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-sm",
+        "bg-background/70 fixed inset-0 z-50 backdrop-blur-sm",
         className,
       )}
       {...props}
@@ -35,13 +35,13 @@ function SheetContent({ className, children, ...props }: Dialog.Popup.Props) {
       <SheetBackdrop />
       <Dialog.Popup
         className={cn(
-          "fixed top-0 right-0 z-50 flex h-dvh w-[min(22rem,calc(100vw-2rem))] flex-col border-l border-stone-200 bg-white p-6 shadow-2xl outline-none dark:border-stone-700 dark:bg-stone-950 dark:ring-1 dark:ring-stone-700/70",
+          "ring-primary/20 bg-background/96 fixed top-0 right-0 z-50 flex h-dvh w-[min(22rem,calc(100vw-2rem))] flex-col border-l border-[var(--paleo-border)] p-6 shadow-2xl ring-1 backdrop-blur-xl outline-none",
           className,
         )}
         {...props}
       >
         {children}
-        <Dialog.Close className="focus-visible:ring-ring absolute top-4 right-4 inline-flex size-9 items-center justify-center rounded-full text-stone-500 transition hover:bg-stone-100 hover:text-stone-950 focus-visible:ring-2 focus-visible:outline-none dark:text-stone-200 dark:hover:bg-amber-400/12 dark:hover:text-amber-100">
+        <Dialog.Close className="hover:bg-primary/10 hover:text-primary focus-visible:ring-ring text-muted-foreground absolute top-4 right-4 inline-flex size-9 items-center justify-center rounded-full transition focus-visible:ring-2 focus-visible:outline-none">
           <X aria-hidden="true" className="size-4" />
           <span className="sr-only">Cerrar menú</span>
         </Dialog.Close>
@@ -58,7 +58,7 @@ function SheetTitle({ className, ...props }: Dialog.Title.Props) {
   return (
     <Dialog.Title
       className={cn(
-        "text-lg font-semibold tracking-tight text-stone-950 dark:text-stone-50",
+        "text-foreground text-lg font-semibold tracking-tight",
         className,
       )}
       {...props}
@@ -69,10 +69,7 @@ function SheetTitle({ className, ...props }: Dialog.Title.Props) {
 function SheetDescription({ className, ...props }: Dialog.Description.Props) {
   return (
     <Dialog.Description
-      className={cn(
-        "text-sm leading-6 text-stone-600 dark:text-stone-300",
-        className,
-      )}
+      className={cn("text-muted-foreground text-sm leading-6", className)}
       {...props}
     />
   );

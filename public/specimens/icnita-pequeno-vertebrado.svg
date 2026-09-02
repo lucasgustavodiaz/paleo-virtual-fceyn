@@ -1,11 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
   <title id="title">Miniatura de icnita de pequeño vertebrado</title>
-  <desc id="desc">Ilustración abstracta de una huella fósil sobre roca.</desc>
-  <rect width="800" height="600" fill="#e9e1d2"/>
-  <path d="M190 170c102-45 230-54 354-14 77 25 122 65 136 114 21 74-36 151-137 185-119 40-265 21-354-45-82-61-82-161 1-240Z" fill="#b7a184"/>
-  <ellipse cx="370" cy="305" rx="60" ry="88" fill="#725943" opacity="0.9"/>
-  <ellipse cx="300" cy="235" rx="34" ry="48" fill="#725943" opacity="0.82"/>
-  <ellipse cx="380" cy="205" rx="34" ry="52" fill="#725943" opacity="0.82"/>
-  <ellipse cx="460" cy="235" rx="34" ry="48" fill="#725943" opacity="0.82"/>
-  <path d="M170 494h460" stroke="#cdbb9f" stroke-width="18" stroke-linecap="round"/>
+  <desc id="desc">Ilustración de huella fósil en placa escaneada.</desc>
+  <defs>
+    <style>
+      :root{--bg:#edf8fc;--panel:#dff1f7;--line:#007f96;--glow:#008f77;--bone:#214256;--soft:#638395;--grid:rgba(0,126,150,.14)}
+      @media (prefers-color-scheme: dark){:root{--bg:#050b12;--panel:#071725;--line:#59f3ff;--glow:#00ffc6;--bone:#d5fbff;--soft:#7fe6ef;--grid:rgba(89,243,255,.16)}}
+    </style>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse"><path d="M44 0H0v44" fill="none" stroke="var(--grid)"/></pattern>
+    <filter id="glow" x="-35%" y="-35%" width="170%" height="170%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="800" height="600" fill="var(--bg)"/>
+  <rect width="800" height="600" fill="url(#grid)"/>
+  <rect x="92" y="80" width="616" height="424" rx="32" fill="var(--panel)" opacity=".58" stroke="var(--line)" stroke-opacity=".28"/>
+  <path d="M190 170c102-45 230-54 354-14 77 25 122 65 136 114 21 74-36 151-137 185-119 40-265 21-354-45-82-61-82-161 1-240Z" fill="none" stroke="var(--bone)" stroke-width="22" opacity=".78"/>
+  <g filter="url(#glow)" fill="none" stroke="var(--line)" stroke-width="18">
+    <ellipse cx="370" cy="305" rx="60" ry="88"/>
+    <ellipse cx="300" cy="235" rx="34" ry="48"/>
+    <ellipse cx="380" cy="205" rx="34" ry="52"/>
+    <ellipse cx="460" cy="235" rx="34" ry="48"/>
+  </g>
+  <g fill="var(--glow)" opacity=".72">
+    <circle cx="370" cy="305" r="5"/><circle cx="300" cy="235" r="4"/><circle cx="380" cy="205" r="4"/><circle cx="460" cy="235" r="4"/>
+  </g>
+  <path d="M170 494h460" stroke="var(--line)" stroke-width="3" stroke-linecap="round" opacity=".44"/>
+  <path d="M128 118h86M128 118v86M672 482h-86M672 482v-86" fill="none" stroke="var(--glow)" stroke-width="4" stroke-linecap="round" opacity=".75"/>
 </svg>
