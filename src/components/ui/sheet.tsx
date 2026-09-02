@@ -35,7 +35,7 @@ function SheetContent({ className, children, ...props }: Dialog.Popup.Props) {
       <SheetBackdrop />
       <Dialog.Popup
         className={cn(
-          "ring-primary/20 bg-background/96 fixed top-0 right-0 z-50 flex h-dvh w-[min(22rem,calc(100vw-2rem))] flex-col border-l border-[var(--paleo-border)] p-6 shadow-2xl ring-1 backdrop-blur-xl outline-none",
+          "ring-primary/20 bg-background/96 fixed top-0 right-0 z-50 flex h-dvh w-[min(22rem,calc(100vw-2rem))] flex-col border-l border-(--paleo-border) p-6 shadow-2xl ring-1 backdrop-blur-xl outline-none",
           className,
         )}
         {...props}

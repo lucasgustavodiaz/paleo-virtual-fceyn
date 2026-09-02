@@ -30,7 +30,7 @@ const principles = [
 export default function AboutPage() {
   return (
     <main className="bg-background flex-1">
-      <section className="relative overflow-hidden border-b border-[var(--paleo-border)]">
+      <section className="relative overflow-hidden border-b border-(--paleo-border)">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_28%_18%,rgba(0,229,255,0.14),transparent_24rem),radial-gradient(circle_at_78%_42%,rgba(0,255,198,0.08),transparent_24rem)]" />
         <div className="paleo-scanlines absolute inset-0 opacity-25" />
         <div className="relative mx-auto max-w-7xl px-4 py-18 sm:px-6 lg:px-8">
@@ -99,7 +99,7 @@ export default function AboutPage() {
             {principles.map((principle) => (
               <Card
                 key={principle}
-                className="bg-secondary/35 border-[var(--paleo-border)] py-0"
+                className="bg-secondary/35 border-(--paleo-border) py-0"
               >
                 <CardContent className="text-muted-foreground p-5 text-sm leading-6">
                   {principle}

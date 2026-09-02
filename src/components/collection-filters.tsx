@@ -36,7 +36,7 @@ const filterConfig: Array<{ key: FilterKey; label: string; allLabel: string }> =
   ];
 
 const controlClassName =
-  "h-12 w-full rounded-xl border border-[var(--paleo-border)] bg-background/82 px-3 font-mono text-sm text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] outline-none transition placeholder:text-muted-foreground/72 focus:border-primary/75 focus:ring-3 focus:ring-primary/14";
+  "h-12 w-full rounded-xl border border-(--paleo-border) bg-background/82 px-3 font-mono text-sm text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] outline-none transition placeholder:text-muted-foreground/72 focus:border-primary/75 focus:ring-3 focus:ring-primary/14";
 
 const defaultFilters: CollectionFiltersState = {
   category: "",
@@ -133,7 +133,7 @@ export function CollectionFilters({ specimens }: CollectionFiltersProps) {
     <div className="space-y-8">
       <Card className="paleo-panel py-0">
         <CardContent className="space-y-5 p-4 sm:p-5">
-          <div className="flex flex-col gap-3 border-b border-[var(--paleo-border)] pb-5 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex flex-col gap-3 border-b border-(--paleo-border) pb-5 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <p className="paleo-kicker flex items-center gap-2">
                 <SlidersHorizontal aria-hidden="true" className="size-3.5" />
@@ -151,7 +151,7 @@ export function CollectionFilters({ specimens }: CollectionFiltersProps) {
             </p>
           </div>
 
-          <div className="bg-secondary/35 rounded-2xl border border-[var(--paleo-border)] p-4">
+          <div className="bg-secondary/35 rounded-2xl border border-(--paleo-border) p-4">
             <div className="flex flex-col gap-3">
               <label
                 htmlFor="collection-search"
@@ -222,7 +222,7 @@ export function CollectionFilters({ specimens }: CollectionFiltersProps) {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 border-t border-[var(--paleo-border)] pt-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-4 border-t border-(--paleo-border) pt-5 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-muted-foreground text-sm">
               {activeFilterCount > 0
                 ? `${activeFilterCount} filtro${activeFilterCount === 1 ? "" : "s"} activo${activeFilterCount === 1 ? "" : "s"}. La URL refleja esta búsqueda para compartirla.`

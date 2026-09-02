@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 export default function Home() {
   return (
     <main className="bg-background flex-1">
-      <section className="bg-background text-foreground relative overflow-hidden border-b border-[var(--paleo-border)]">
+      <section className="bg-background text-foreground relative overflow-hidden border-b border-(--paleo-border)">
         <div className="absolute inset-0 bg-[url('/hero-paleo.svg')] bg-cover bg-center opacity-18 mix-blend-multiply dark:opacity-24 dark:mix-blend-screen" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_35%,rgba(0,126,150,0.14),transparent_24rem),radial-gradient(circle_at_20%_72%,rgba(0,143,119,0.08),transparent_28rem),linear-gradient(90deg,rgba(244,251,255,0.98),rgba(244,251,255,0.84)_48%,rgba(244,251,255,0.62))] dark:bg-[radial-gradient(circle_at_72%_35%,rgba(0,229,255,0.18),transparent_24rem),radial-gradient(circle_at_20%_72%,rgba(0,255,198,0.1),transparent_28rem),linear-gradient(90deg,rgba(5,11,18,0.98),rgba(5,11,18,0.84)_48%,rgba(5,11,18,0.62))]" />
         <div className="paleo-scanlines absolute inset-0 opacity-35" />
@@ -61,7 +61,7 @@ export default function Home() {
               ].map(([label, value]) => (
                 <div
                   key={label}
-                  className="bg-secondary/35 rounded-2xl border border-[var(--paleo-border)] p-4 backdrop-blur"
+                  className="bg-secondary/35 rounded-2xl border border-(--paleo-border) p-4 backdrop-blur"
                 >
                   <p className="text-muted-foreground font-mono text-[0.62rem] tracking-[0.18em] uppercase">
                     {label}
@@ -76,7 +76,7 @@ export default function Home() {
           <Card className="paleo-panel paleo-corners relative overflow-hidden py-0">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_38%,rgba(0,255,198,0.18),transparent_15rem)]" />
             <CardContent className="space-y-5 p-6">
-              <div className="bg-secondary/35 relative aspect-square rounded-2xl border border-[var(--paleo-border)] p-5">
+              <div className="bg-secondary/35 relative aspect-square rounded-2xl border border-(--paleo-border) p-5">
                 <div className="border-primary/20 absolute inset-8 rounded-full border" />
                 <div className="border-accent/20 absolute inset-16 rounded-full border" />
                 <div className="bg-primary/16 absolute top-1/2 left-1/2 size-32 -translate-x-1/2 -translate-y-1/2 rounded-full blur-2xl" />
@@ -89,7 +89,7 @@ export default function Home() {
                     <Atom aria-hidden="true" className="text-primary size-16" />
                   </div>
                   <div className="grid grid-cols-3 gap-2 text-center">
-                    <div className="bg-background/45 rounded-xl border border-[var(--paleo-border)] p-3">
+                    <div className="bg-background/45 rounded-xl border border-(--paleo-border) p-3">
                       <p className="text-foreground text-2xl font-semibold">
                         {specimens.length}
                       </p>
@@ -97,7 +97,7 @@ export default function Home() {
                         piezas
                       </p>
                     </div>
-                    <div className="bg-background/45 rounded-xl border border-[var(--paleo-border)] p-3">
+                    <div className="bg-background/45 rounded-xl border border-(--paleo-border) p-3">
                       <p className="text-foreground text-2xl font-semibold">
                         3D
                       </p>
@@ -105,7 +105,7 @@ export default function Home() {
                         visor
                       </p>
                     </div>
-                    <div className="bg-background/45 rounded-xl border border-[var(--paleo-border)] p-3">
+                    <div className="bg-background/45 rounded-xl border border-(--paleo-border) p-3">
                       <p className="text-foreground text-2xl font-semibold">
                         GLB
                       </p>

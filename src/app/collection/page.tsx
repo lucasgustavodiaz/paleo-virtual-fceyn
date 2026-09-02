@@ -12,7 +12,7 @@ export const metadata = {
 export default function CollectionPage() {
   return (
     <main className="bg-background flex-1">
-      <section className="relative overflow-hidden border-b border-[var(--paleo-border)]">
+      <section className="relative overflow-hidden border-b border-(--paleo-border)">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_18%,rgba(0,229,255,0.13),transparent_24rem),radial-gradient(circle_at_82%_12%,rgba(0,255,198,0.08),transparent_22rem)]" />
         <div className="relative mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
           <div className="max-w-3xl">

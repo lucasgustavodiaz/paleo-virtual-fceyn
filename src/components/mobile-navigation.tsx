@@ -29,7 +29,7 @@ export function MobileNavigation() {
       <ThemeToggle />
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger
-          className="bg-secondary/65 text-primary hover:border-primary/60 hover:bg-primary/12 focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-xl border border-[var(--paleo-border)] shadow-[0_0_26px_rgba(0,229,255,0.08)] transition focus-visible:ring-2 focus-visible:outline-none"
+          className="bg-secondary/65 text-primary hover:border-primary/60 hover:bg-primary/12 focus-visible:ring-ring inline-flex size-9 items-center justify-center rounded-xl border border-(--paleo-border) shadow-[0_0_26px_rgba(0,229,255,0.08)] transition focus-visible:ring-2 focus-visible:outline-none"
           aria-label="Abrir menú de navegación"
         >
           <Menu aria-hidden="true" className="size-4" />

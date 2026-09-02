@@ -108,7 +108,7 @@ export function SpecimenMetadata({ specimen }: SpecimenMetadataProps) {
                 {visibleFields.map(({ label, key }) => (
                   <div
                     key={key}
-                    className="bg-secondary/35 rounded-2xl border border-[var(--paleo-border)] p-3"
+                    className="bg-secondary/35 rounded-2xl border border-(--paleo-border) p-3"
                   >
                     <dt className="text-muted-foreground font-mono text-[0.62rem] font-semibold tracking-[0.16em] uppercase">
                       {label}
