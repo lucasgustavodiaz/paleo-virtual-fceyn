@@ -120,6 +120,7 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
   const [resetSignal, setResetSignal] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const hasModelUrl = modelUrl.trim().length > 0;
 
   useEffect(() => {
     function updateFullscreenState() {
@@ -156,35 +157,49 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
       <div className="border-primary/35 bg-background/70 text-primary pointer-events-none absolute top-4 left-4 z-20 rounded-full border px-3 py-1 font-mono text-[0.62rem] font-bold tracking-[0.18em] uppercase backdrop-blur">
         Modelo 3D
       </div>
-      <Canvas
-        camera={{ position: [3, 2, 5], fov: 45 }}
-        gl={{ antialias: true }}
-        className="bg-[radial-gradient(circle_at_center,rgba(89,243,255,0.12),transparent_38%),linear-gradient(180deg,#0b1726,#050b12)]"
-      >
-        <ambientLight intensity={0.8} />
-        <directionalLight position={[4, 6, 4]} intensity={1.8} />
-        <ModelErrorBoundary>
-          <Suspense fallback={<LoadingModel />}>
-            <Bounds fit clip observe margin={1.25}>
-              <FossilModel modelUrl={modelUrl} />
-              <CameraResetter
-                resetSignal={resetSignal}
-                controlsRef={controlsRef}
-              />
-            </Bounds>
-            <Environment preset="studio" />
-          </Suspense>
-        </ModelErrorBoundary>
-        <OrbitControls
-          ref={controlsRef}
-          enableDamping
-          makeDefault
-          minDistance={1.5}
-          maxDistance={12}
-          panSpeed={0.8}
-          zoomSpeed={0.8}
-        />
-      </Canvas>
+      {hasModelUrl ? (
+        <Canvas
+          camera={{ position: [3, 2, 5], fov: 45 }}
+          gl={{ antialias: true }}
+          className="bg-[radial-gradient(circle_at_center,rgba(89,243,255,0.12),transparent_38%),linear-gradient(180deg,#0b1726,#050b12)]"
+        >
+          <ambientLight intensity={0.8} />
+          <directionalLight position={[4, 6, 4]} intensity={1.8} />
+          <ModelErrorBoundary>
+            <Suspense fallback={<LoadingModel />}>
+              <Bounds fit clip observe margin={1.25}>
+                <FossilModel modelUrl={modelUrl} />
+                <CameraResetter
+                  resetSignal={resetSignal}
+                  controlsRef={controlsRef}
+                />
+              </Bounds>
+              <Environment preset="studio" />
+            </Suspense>
+          </ModelErrorBoundary>
+          <OrbitControls
+            ref={controlsRef}
+            enableDamping
+            makeDefault
+            minDistance={1.5}
+            maxDistance={12}
+            panSpeed={0.8}
+            zoomSpeed={0.8}
+          />
+        </Canvas>
+      ) : (
+        <div className="grid h-full place-items-center bg-[radial-gradient(circle_at_center,rgba(89,243,255,0.12),transparent_38%),linear-gradient(180deg,#0b1726,#050b12)] px-6 text-center">
+          <div className="bg-background/90 max-w-sm rounded-2xl border border-[var(--paleo-border)] p-5 shadow-[0_0_34px_rgba(0,229,255,0.14)] backdrop-blur">
+            <p className="text-primary font-mono text-xs font-semibold tracking-[0.16em] uppercase">
+              Modelo pendiente
+            </p>
+            <p className="text-muted-foreground mt-3 text-sm leading-6">
+              Esta ficha ya está disponible, pero todavía no tiene un archivo 3D
+              publicado para explorar.
+            </p>
+          </div>
+        </div>
+      )}
       <div className="absolute top-4 right-4 z-20 flex flex-wrap justify-end gap-2 pl-28">
         <Button
           type="button"
@@ -192,6 +207,7 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
           size="sm"
           onClick={() => setResetSignal((currentSignal) => currentSignal + 1)}
           aria-label="Restablecer cámara"
+          disabled={!hasModelUrl}
           className="bg-background/78 hover:text-primary text-foreground border-[var(--paleo-border)] backdrop-blur"
         >
           <RotateCcw aria-hidden="true" />
@@ -207,6 +223,7 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
               ? "Salir de pantalla completa"
               : "Ver en pantalla completa"
           }
+          disabled={!hasModelUrl}
           className="bg-background/78 hover:text-primary text-foreground border-[var(--paleo-border)] backdrop-blur"
         >
           {isFullscreen ? (

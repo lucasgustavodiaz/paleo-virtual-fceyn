@@ -18,8 +18,8 @@ export default function OpenGraphImage() {
         position: "relative",
         overflow: "hidden",
         background:
-          "linear-gradient(135deg, #1c1917 0%, #44403c 58%, #d6c7ad 100%)",
-        color: "#fafaf9",
+          "radial-gradient(circle at 76% 24%, rgba(89,243,255,0.24), transparent 28%), radial-gradient(circle at 20% 80%, rgba(0,255,198,0.14), transparent 34%), linear-gradient(135deg, #050b12 0%, #07111f 48%, #0b1726 100%)",
+        color: "#f3ffff",
         fontFamily: "Arial, sans-serif",
       }}
     >
@@ -28,21 +28,78 @@ export default function OpenGraphImage() {
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(circle at 78% 18%, rgba(245,239,230,0.22), transparent 25%), radial-gradient(circle at 18% 82%, rgba(214,199,173,0.2), transparent 30%)",
+            "linear-gradient(rgba(89,243,255,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(89,243,255,0.055) 1px, transparent 1px)",
+          backgroundSize: "48px 48px",
         }}
       />
       <div
         style={{
           position: "absolute",
-          left: 120,
-          top: 104,
-          width: 760,
-          height: 360,
-          borderRadius: 240,
-          border: "22px solid rgba(245,239,230,0.12)",
-          transform: "rotate(-9deg)",
+          right: 82,
+          top: 74,
+          width: 364,
+          height: 364,
+          borderRadius: 999,
+          border: "1px solid rgba(89,243,255,0.38)",
+          boxShadow: "0 0 60px rgba(0,229,255,0.16)",
         }}
       />
+      <div
+        style={{
+          position: "absolute",
+          right: 140,
+          top: 148,
+          width: 270,
+          height: 210,
+          transform: "rotate(-8deg)",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            left: 8,
+            top: 54,
+            width: 230,
+            height: 132,
+            border: "12px solid rgba(213,251,255,0.82)",
+            borderRadius: "55% 45% 48% 52%",
+            boxShadow: "0 0 30px rgba(89,243,255,0.32)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            left: 62,
+            top: 96,
+            width: 70,
+            height: 50,
+            border: "8px solid rgba(89,243,255,0.82)",
+            borderRadius: "55%",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            left: 154,
+            top: 88,
+            width: 76,
+            height: 54,
+            border: "8px solid rgba(89,243,255,0.72)",
+            borderRadius: "55%",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            left: 104,
+            top: 188,
+            width: 112,
+            height: 0,
+            borderTop: "8px solid rgba(0,255,198,0.74)",
+            borderRadius: 999,
+          }}
+        />
+      </div>
       <div
         style={{
           position: "relative",
@@ -56,13 +113,15 @@ export default function OpenGraphImage() {
         <div
           style={{
             display: "flex",
-            width: 520,
+            width: 570,
             borderRadius: 999,
-            padding: "10px 20px",
-            background: "rgba(255,255,255,0.14)",
-            border: "1px solid rgba(255,255,255,0.22)",
-            fontSize: 28,
-            letterSpacing: 2,
+            padding: "12px 22px",
+            background: "rgba(0,255,198,0.12)",
+            border: "1px solid rgba(0,255,198,0.42)",
+            color: "#00ffc6",
+            fontSize: 26,
+            fontWeight: 700,
+            letterSpacing: 3,
             textTransform: "uppercase",
           }}
         >
@@ -73,23 +132,23 @@ export default function OpenGraphImage() {
             marginTop: 34,
             display: "flex",
             flexDirection: "column",
-            gap: 12,
+            gap: 8,
           }}
         >
-          <div style={{ fontSize: 84, fontWeight: 700, letterSpacing: -3 }}>
+          <div style={{ fontSize: 92, fontWeight: 800, letterSpacing: -4 }}>
             Paleo Virtual
           </div>
-          <div style={{ fontSize: 64, fontWeight: 700, color: "#f5efe6" }}>
+          <div style={{ fontSize: 68, fontWeight: 800, color: "#59f3ff" }}>
             FCEyN
           </div>
         </div>
         <div
           style={{
             marginTop: 34,
-            maxWidth: 840,
+            maxWidth: 760,
             fontSize: 30,
             lineHeight: 1.35,
-            color: "#e7e5e4",
+            color: "rgba(243,255,255,0.72)",
           }}
         >
           Visualizador web para objetos paleontológicos digitalizados en 3D.
