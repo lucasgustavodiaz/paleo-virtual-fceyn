@@ -4,6 +4,8 @@ Visualizador web para objetos 3D del repositorio paleontológico de la Facultad 
 
 La primera versión incluye home institucional, colección navegable, búsqueda, filtros, ficha de detalle y visualizador 3D para modelos `.glb` o `.gltf`.
 
+La interfaz usa una identidad visual dark-first con modo claro equivalente, acentos cyan/aqua, miniaturas SVG generadas para el catálogo inicial, favicon propio y preview Open Graph integrado al mismo sistema visual.
+
 ## Stack
 
 - Next.js App Router
@@ -21,6 +23,7 @@ npm run dev
 npm run build
 npm run start
 npm run lint
+npm run test
 npm run typecheck
 npm run format
 npm run check
@@ -35,6 +38,28 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
 En producción, usar el dominio institucional final. Esta variable se usa para metadata y Open Graph.
+
+## Validación visual
+
+Antes de publicar cambios de interfaz, revisar manualmente:
+
+- Modo claro y oscuro en `/`, `/collection`, `/about` y `/specimens/[slug]`.
+- Navegación mobile, sheet lateral y cards de colección.
+- Viewer 3D con modelo disponible, URL inválida y modelo pendiente.
+- Preview generado en `/opengraph-image`.
+- Favicon generado en `/icon.svg` y su lectura a tamaño de pestaña.
+
+## Tests
+
+Los tests unitarios cubren la lógica pura de búsqueda, filtros, conteos y ordenamiento de colección en `src/lib/collection-utils.test.ts`.
+
+```bash
+npm run test
+```
+
+## Nota sobre Three.js
+
+`@react-three/fiber@9.7.0` todavía instancia `THREE.Clock` internamente, por eso Three.js puede emitir el warning `THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.`. El código de la app no instancia `THREE.Clock` directamente. Se prioriza mantener `three` actualizado y conservar `Environment preset="studio"` porque aporta iluminación/reflejos importantes al visor 3D. Revisar upgrades de Fiber/Drei cuando migren internamente a `THREE.Timer`.
 
 ## Estructura principal
 

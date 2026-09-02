@@ -2,47 +2,47 @@
   <defs>
     <style>
       :root {
-        --bg: #f4fbff;
-        --panel: #ffffff;
+        --bg-a: #f4fbff;
+        --bg-b: #ffffff;
         --fg: #102236;
         --cyan: #007f96;
         --aqua: #008f77;
-        --grid: rgba(0, 126, 150, 0.18);
+        --grid: rgba(0, 126, 150, 0.16);
       }
 
       @media (prefers-color-scheme: dark) {
         :root {
-          --bg: #050b12;
-          --panel: #0b1726;
+          --bg-a: #050b12;
+          --bg-b: #0b1726;
           --fg: #f3ffff;
           --cyan: #59f3ff;
           --aqua: #00ffc6;
-          --grid: rgba(89, 243, 255, 0.22);
+          --grid: rgba(89, 243, 255, 0.2);
         }
       }
     </style>
-    <linearGradient id="surface" x1="8" x2="56" y1="6" y2="58">
-      <stop offset="0" stop-color="var(--panel)"/>
-      <stop offset="1" stop-color="var(--bg)"/>
+    <linearGradient id="bg" x1="7" x2="57" y1="6" y2="58">
+      <stop offset="0" stop-color="var(--bg-b)"/>
+      <stop offset="1" stop-color="var(--bg-a)"/>
     </linearGradient>
-    <linearGradient id="accent" x1="17" x2="48" y1="14" y2="50">
+    <linearGradient id="scan" x1="20" x2="48" y1="15" y2="49">
       <stop offset="0" stop-color="var(--cyan)"/>
       <stop offset="1" stop-color="var(--aqua)"/>
     </linearGradient>
     <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
-      <feGaussianBlur stdDeviation="1.8" result="blur"/>
+      <feGaussianBlur stdDeviation="1.7" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
   </defs>
-  <rect x="5" y="5" width="54" height="54" rx="16" fill="url(#surface)"/>
-  <path d="M18 16h28M18 48h28M16 18v28M48 18v28" fill="none" stroke="var(--grid)" stroke-width="1.2"/>
-  <path d="M18 14h10M18 14v10M46 50H36M46 50V40" fill="none" stroke="url(#accent)" stroke-linecap="round" stroke-width="2.4"/>
+  <rect x="5" y="5" width="54" height="54" rx="16" fill="url(#bg)" stroke="var(--grid)" stroke-width="2"/>
+  <path d="M17 18h8M17 18v8M47 46h-8M47 46v-8" fill="none" stroke="url(#scan)" stroke-linecap="round" stroke-width="2.4"/>
   <g filter="url(#glow)">
-    <path d="M21 45V19h11c6 0 10 4 10 9s-4 9-10 9h-5v8h-6Zm6-14h5c2.7 0 4.3-1.3 4.3-3S34.7 25 32 25h-5v6Z" fill="var(--fg)"/>
-    <path d="M37 45 48 19h-6.2l-6 16.5L30 19h-6.4l10.8 26H37Z" fill="url(#accent)" opacity="0.95"/>
+    <path d="M23 48V16h13c8 0 13 5 13 12s-5 12-13 12h-6v8h-7Zm7-15h6c3.6 0 6-2 6-5s-2.4-5-6-5h-6v10Z" fill="var(--fg)"/>
+    <path d="M33 18c9 1 16 7 17 16" fill="none" stroke="url(#scan)" stroke-linecap="round" stroke-width="3"/>
+    <path d="M35 39c5-1 9-4 12-8" fill="none" stroke="url(#scan)" stroke-linecap="round" stroke-width="3"/>
   </g>
-  <circle cx="48" cy="17" r="2.2" fill="var(--aqua)"/>
+  <circle cx="48" cy="18" r="2.2" fill="var(--aqua)"/>
 </svg>

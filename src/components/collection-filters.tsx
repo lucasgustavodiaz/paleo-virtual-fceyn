@@ -8,14 +8,20 @@ import { SpecimenCard } from "@/components/specimen-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  filterSpecimens,
+  getCategoryCounts,
+  getUniqueValues,
+  sortSpecimens,
+  type CollectionFiltersState,
+  type FilterKey,
+  type SortKey,
+} from "@/lib/collection-utils";
 import type { Specimen } from "@/types/specimen";
 
 type CollectionFiltersProps = {
   specimens: Specimen[];
 };
-
-type FilterKey = "category" | "period" | "provenance";
-type SortKey = "name" | "period" | "inventoryNumber";
 
 const filterConfig: Array<{ key: FilterKey; label: string; allLabel: string }> =
   [
@@ -28,80 +34,24 @@ const filterConfig: Array<{ key: FilterKey; label: string; allLabel: string }> =
     },
   ];
 
-function getUniqueValues(specimens: Specimen[], key: FilterKey) {
-  return Array.from(new Set(specimens.map((specimen) => specimen[key]))).sort(
-    (first, second) => first.localeCompare(second, "es"),
-  );
-}
-
-function normalizeSearchText(value: string) {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLocaleLowerCase("es");
-}
-
-function getCategoryCounts(specimens: Specimen[]) {
-  return specimens.reduce<Record<string, number>>((counts, specimen) => {
-    counts[specimen.category] = (counts[specimen.category] ?? 0) + 1;
-
-    return counts;
-  }, {});
-}
-
 const controlClassName =
   "h-12 w-full rounded-xl border border-[var(--paleo-border)] bg-background/82 px-3 font-mono text-sm text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] outline-none transition placeholder:text-muted-foreground/72 focus:border-primary/75 focus:ring-3 focus:ring-primary/14";
 
 export function CollectionFilters({ specimens }: CollectionFiltersProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortKey, setSortKey] = useState<SortKey>("name");
-  const [filters, setFilters] = useState<Record<FilterKey, string>>({
+  const [filters, setFilters] = useState<CollectionFiltersState>({
     category: "",
     period: "",
     provenance: "",
   });
 
-  const normalizedSearchQuery = normalizeSearchText(searchQuery.trim());
-
   const categoryCounts = getCategoryCounts(specimens);
-  const filteredSpecimens = specimens.filter((specimen) => {
-    const matchesFilters = filterConfig.every(
-      ({ key }) => !filters[key] || specimen[key] === filters[key],
-    );
-    const searchableText = [
-      specimen.name,
-      specimen.inventoryNumber,
-      specimen.category,
-      specimen.period,
-      specimen.provenance,
-      specimen.description,
-      specimen.credits,
-      specimen.license,
-      specimen.taxon,
-      specimen.geologicalFormation,
-      specimen.estimatedAge,
-      specimen.material,
-      specimen.dimensions,
-      specimen.collector,
-      specimen.digitizationDate,
-      specimen.digitizationMethod,
-      specimen.doi,
-      specimen.bibliographicCitation,
-    ].join(" ");
-    const normalizedSearchableText = normalizeSearchText(searchableText);
-
-    return (
-      matchesFilters &&
-      (!normalizedSearchQuery ||
-        normalizedSearchableText.includes(normalizedSearchQuery))
-    );
-  });
+  const filteredSpecimens = filterSpecimens(specimens, filters, searchQuery);
 
   const hasActiveFilters =
-    Boolean(normalizedSearchQuery) || Object.values(filters).some(Boolean);
-  const sortedSpecimens = [...filteredSpecimens].sort((first, second) =>
-    first[sortKey].localeCompare(second[sortKey], "es"),
-  );
+    Boolean(searchQuery.trim()) || Object.values(filters).some(Boolean);
+  const sortedSpecimens = sortSpecimens(filteredSpecimens, sortKey);
 
   function updateFilter(key: FilterKey, value: string) {
     setFilters((currentFilters) => ({

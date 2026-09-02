@@ -158,10 +158,11 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
           gl={{ antialias: true }}
           className="bg-[radial-gradient(circle_at_center,rgba(0,126,150,0.11),transparent_38%),linear-gradient(180deg,#f4fbff,#e7f4fa)] dark:bg-[radial-gradient(circle_at_center,rgba(89,243,255,0.12),transparent_38%),linear-gradient(180deg,#0b1726,#050b12)]"
         >
-          <ambientLight intensity={0.8} />
-          <hemisphereLight args={["#dffbff", "#102235", 1.2]} />
-          <directionalLight position={[4, 6, 4]} intensity={1.8} />
-          <directionalLight position={[-3, 2, -4]} intensity={0.65} />
+          <ambientLight intensity={1.15} />
+          <hemisphereLight args={["#f2feff", "#102235", 1.55]} />
+          <directionalLight position={[4, 6, 5]} intensity={2.4} />
+          <directionalLight position={[-4, 3, -3]} intensity={1.05} />
+          <pointLight position={[0, 3, 4]} intensity={0.9} color="#59f3ff" />
           <ModelErrorBoundary>
             <Suspense fallback={<LoadingModel />}>
               <Bounds fit clip observe margin={1.25}>

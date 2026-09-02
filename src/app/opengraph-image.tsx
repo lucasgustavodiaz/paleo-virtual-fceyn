@@ -51,6 +51,7 @@ export default function OpenGraphImage() {
           top: 148,
           width: 270,
           height: 210,
+          display: "flex",
           transform: "rotate(-8deg)",
         }}
       >
