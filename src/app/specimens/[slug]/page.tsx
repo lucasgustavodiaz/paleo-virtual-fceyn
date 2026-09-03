@@ -67,20 +67,23 @@ export default async function SpecimenDetailPage({
   return (
     <main className="bg-background flex-1">
       <section className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <Link
-          href="/collection"
-          className={cn(
-            buttonVariants({ variant: "ghost", size: "sm" }),
-            "mb-6 font-mono text-xs tracking-[0.12em] uppercase",
-          )}
-        >
-          Volver a la colección
-        </Link>
-        <div className="mb-6">
-          <p className="paleo-kicker">Estación de análisis</p>
-          <h1 className="text-foreground mt-2 text-3xl font-semibold tracking-[-0.035em] sm:text-5xl">
-            {specimen.name}
-          </h1>
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <p className="paleo-kicker">Estación de análisis</p>
+            <h1 className="text-foreground mt-2 text-3xl font-semibold tracking-[-0.035em] sm:text-5xl">
+              {specimen.name}
+            </h1>
+          </div>
+          <Link
+            href="/collection"
+            className={cn(
+              buttonVariants({ variant: "ghost", size: "sm" }),
+              "shrink-0 self-start font-mono text-xs tracking-[0.12em] uppercase sm:mt-1",
+            )}
+          >
+            <ArrowLeft aria-hidden="true" />
+            Volver a la colección
+          </Link>
         </div>
         <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_430px]">
           <div className="grid gap-4">
