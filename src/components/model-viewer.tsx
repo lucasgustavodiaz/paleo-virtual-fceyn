@@ -170,8 +170,6 @@ function WebXRSessionBridge({
     let currentSession: XRSession | null = null;
     let isMounted = true;
 
-    gl.xr.enabled = true;
-
     async function startVrSession() {
       if (!navigator.xr) {
         onError("Este navegador no expone WebXR.");
@@ -367,6 +365,9 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
         <Canvas
           camera={{ position: [3, 2, 5], fov: 45 }}
           gl={{ antialias: true }}
+          onCreated={({ gl }) => {
+            gl.xr.enabled = true;
+          }}
           className="bg-[radial-gradient(circle_at_center,rgba(0,126,150,0.11),transparent_38%),linear-gradient(180deg,#f4fbff,#e7f4fa)] dark:bg-[radial-gradient(circle_at_center,rgba(89,243,255,0.12),transparent_38%),linear-gradient(180deg,#0b1726,#050b12)]"
         >
           <WebXRSessionBridge
