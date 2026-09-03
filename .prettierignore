@@ -8,4 +8,6 @@ AGENTS.md
 
 # Playwright
 test-results/
+/test-results/
 playwright-report/
+/playwright-report/

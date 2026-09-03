@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { ArrowLeft, ArrowRight, Download } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { ModelViewer } from "@/components/model-viewer";
+import { SpecimenActions } from "@/components/specimen-actions";
 import { SpecimenMetadata } from "@/components/specimen-metadata";
 import { buttonVariants } from "@/components/ui/button";
 import { getSpecimenBySlug, specimens } from "@/data/specimens";
@@ -62,7 +63,6 @@ export default async function SpecimenDetailPage({
   const previousSpecimen =
     specimens[(specimenIndex - 1 + specimens.length) % specimens.length];
   const nextSpecimen = specimens[(specimenIndex + 1) % specimens.length];
-  const specimenJsonHref = `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(specimen, null, 2))}`;
 
   return (
     <main className="bg-background flex-1">
@@ -83,13 +83,16 @@ export default async function SpecimenDetailPage({
           </h1>
         </div>
         <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_430px]">
-          <ModelViewer
-            modelUrl={specimen.modelUrl}
-            label={`Visualizador 3D de ${specimen.name}`}
-          />
+          <div className="grid gap-4">
+            <ModelViewer
+              modelUrl={specimen.modelUrl}
+              label={`Visualizador 3D de ${specimen.name}`}
+            />
+            <SpecimenActions specimen={specimen} />
+          </div>
           <SpecimenMetadata specimen={specimen} />
         </div>
-        <div className="mt-8 grid gap-3 sm:grid-cols-3">
+        <div className="mt-8 grid gap-3 sm:grid-cols-2">
           <Link
             href={`/specimens/${previousSpecimen.slug}`}
             className={cn(
@@ -107,17 +110,6 @@ export default async function SpecimenDetailPage({
               </span>
             </span>
           </Link>
-          <a
-            href={specimenJsonHref}
-            download={`${specimen.slug}.json`}
-            className={cn(
-              buttonVariants({ variant: "secondary", size: "lg" }),
-              "h-auto gap-3 p-4",
-            )}
-          >
-            <Download aria-hidden="true" />
-            Descargar ficha JSON
-          </a>
           <Link
             href={`/specimens/${nextSpecimen.slug}`}
             className={cn(

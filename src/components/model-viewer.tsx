@@ -19,8 +19,22 @@ import {
   useBounds,
   useGLTF,
 } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import { HelpCircle, Maximize2, Minimize2, RotateCcw } from "lucide-react";
+import { Canvas, useThree } from "@react-three/fiber";
+import {
+  Glasses,
+  HelpCircle,
+  type LucideIcon,
+  Maximize2,
+  Minimize2,
+  MousePointer2,
+  Move3D,
+  Rotate3D,
+  RotateCcw,
+  SlidersHorizontal,
+  X,
+  ZoomIn,
+} from "lucide-react";
+import type { WebGLRenderer } from "three";
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
 
 import { Button } from "@/components/ui/button";
@@ -32,11 +46,49 @@ type ModelViewerProps = {
 };
 
 type LightingMode = "studio" | "neutral" | "contrast";
+type StartVrSession = () => Promise<void>;
 
 const lightingOptions: Array<{ value: LightingMode; label: string }> = [
   { value: "studio", label: "Estudio" },
   { value: "neutral", label: "Neutra" },
   { value: "contrast", label: "Contraste" },
+];
+
+const controlHelpItems: Array<{
+  icon: LucideIcon;
+  title: string;
+  description: string;
+}> = [
+  {
+    icon: Rotate3D,
+    title: "Rotar",
+    description: "Mirar la pieza desde todos sus lados.",
+  },
+  {
+    icon: ZoomIn,
+    title: "Zoom",
+    description: "Acercarte a dientes, suturas, texturas o marcas.",
+  },
+  {
+    icon: Move3D,
+    title: "Desplazar",
+    description: "Mover el encuadre cuando estás muy cerca.",
+  },
+  {
+    icon: RotateCcw,
+    title: "Reset",
+    description: "Volver al encuadre inicial si te perdiste.",
+  },
+  {
+    icon: Maximize2,
+    title: "Pantalla completa",
+    description: "Útil para clase, museo o revisión en detalle.",
+  },
+  {
+    icon: SlidersHorizontal,
+    title: "Inspector",
+    description: "Activa auto-giro y cambia la iluminación.",
+  },
 ];
 
 function canUseWebGL() {
@@ -97,6 +149,105 @@ function CameraResetter({ resetSignal, controlsRef }: CameraResetterProps) {
   return null;
 }
 
+type WebXRSessionBridgeProps = {
+  startVrSessionRef: { current: StartVrSession | null };
+  onSupportChange: (isSupported: boolean) => void;
+  onSupportCheckedChange: (isChecked: boolean) => void;
+  onSessionActiveChange: (isActive: boolean) => void;
+  onError: (message: string) => void;
+};
+
+function WebXRSessionBridge({
+  startVrSessionRef,
+  onSupportChange,
+  onSupportCheckedChange,
+  onSessionActiveChange,
+  onError,
+}: WebXRSessionBridgeProps) {
+  const gl = useThree((state) => state.gl as WebGLRenderer);
+
+  useEffect(() => {
+    let currentSession: XRSession | null = null;
+    let isMounted = true;
+
+    gl.xr.enabled = true;
+
+    async function startVrSession() {
+      if (!navigator.xr) {
+        onError("Este navegador no expone WebXR.");
+        return;
+      }
+
+      if (currentSession) {
+        return;
+      }
+
+      try {
+        const session = await navigator.xr.requestSession("immersive-vr", {
+          optionalFeatures: ["local-floor", "bounded-floor"],
+        });
+
+        currentSession = session;
+        onSessionActiveChange(true);
+        session.addEventListener("end", () => {
+          currentSession = null;
+          onSessionActiveChange(false);
+        });
+        await gl.xr.setSession(session);
+      } catch {
+        onError(
+          "No se pudo iniciar VR. Revisá permisos, HTTPS y compatibilidad del dispositivo.",
+        );
+        onSessionActiveChange(false);
+      }
+    }
+
+    startVrSessionRef.current = startVrSession;
+
+    if (!navigator.xr) {
+      onSupportChange(false);
+      onSupportCheckedChange(true);
+    } else {
+      navigator.xr
+        .isSessionSupported("immersive-vr")
+        .then((isSupported) => {
+          if (!isMounted) {
+            return;
+          }
+
+          onSupportChange(isSupported);
+          onSupportCheckedChange(true);
+        })
+        .catch(() => {
+          if (!isMounted) {
+            return;
+          }
+
+          onSupportChange(false);
+          onSupportCheckedChange(true);
+        });
+    }
+
+    return () => {
+      isMounted = false;
+      startVrSessionRef.current = null;
+
+      if (currentSession) {
+        void currentSession.end();
+      }
+    };
+  }, [
+    gl,
+    onError,
+    onSessionActiveChange,
+    onSupportChange,
+    onSupportCheckedChange,
+    startVrSessionRef,
+  ]);
+
+  return null;
+}
+
 class ModelErrorBoundary extends Component<
   ModelErrorBoundaryProps,
   ModelErrorBoundaryState
@@ -130,23 +281,62 @@ class ModelErrorBoundary extends Component<
 export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
   const viewerRef = useRef<HTMLElement | null>(null);
   const controlsRef = useRef<OrbitControlsImpl | null>(null);
+  const startVrSessionRef = useRef<StartVrSession | null>(null);
   const [resetSignal, setResetSignal] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const [showInspector, setShowInspector] = useState(false);
   const [autoRotate, setAutoRotate] = useState(false);
+  const [isVrSupported, setIsVrSupported] = useState(false);
+  const [isVrSupportChecked, setIsVrSupportChecked] = useState(false);
+  const [isVrSessionActive, setIsVrSessionActive] = useState(false);
+  const [showVrInfo, setShowVrInfo] = useState(false);
+  const [vrError, setVrError] = useState("");
   const [lightingMode, setLightingMode] = useState<LightingMode>("studio");
   const [supportsWebGL] = useState(canUseWebGL);
   const hasModelUrl = modelUrl.trim().length > 0;
+  const vrStatusLabel = isVrSessionActive
+    ? "VR activo"
+    : !hasModelUrl
+      ? "VR pendiente"
+      : !supportsWebGL
+        ? "WebGL no disponible"
+        : !isVrSupportChecked
+          ? "Detectando VR"
+          : isVrSupported
+            ? "VR disponible"
+            : "VR no disponible";
+  const vrStatusDescription = isVrSessionActive
+    ? "La sesión WebXR está activa. Usá los controles del visor para salir de VR."
+    : !hasModelUrl
+      ? "La ficha necesita un archivo 3D publicado antes de iniciar una sesión VR."
+      : !supportsWebGL
+        ? "El navegador no pudo iniciar WebGL, requisito previo para renderizar la escena."
+        : !isVrSupportChecked
+          ? "Estamos consultando si el navegador soporta sesiones WebXR immersive-vr."
+          : isVrSupported
+            ? "El navegador detectó soporte WebXR immersive-vr. Podés iniciar la sesión con un visor compatible."
+            : "Chrome puede abrir la web, pero VR real requiere visor compatible, runtime XR activo y soporte WebXR immersive-vr en HTTPS o localhost.";
 
   useEffect(() => {
     function updateFullscreenState() {
       setIsFullscreen(document.fullscreenElement === viewerRef.current);
     }
 
+    function closePanelsOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setShowHelp(false);
+        setShowInspector(false);
+        setShowVrInfo(false);
+      }
+    }
+
     document.addEventListener("fullscreenchange", updateFullscreenState);
+    document.addEventListener("keydown", closePanelsOnEscape);
 
     return () => {
       document.removeEventListener("fullscreenchange", updateFullscreenState);
+      document.removeEventListener("keydown", closePanelsOnEscape);
     };
   }, []);
 
@@ -179,6 +369,13 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
           gl={{ antialias: true }}
           className="bg-[radial-gradient(circle_at_center,rgba(0,126,150,0.11),transparent_38%),linear-gradient(180deg,#f4fbff,#e7f4fa)] dark:bg-[radial-gradient(circle_at_center,rgba(89,243,255,0.12),transparent_38%),linear-gradient(180deg,#0b1726,#050b12)]"
         >
+          <WebXRSessionBridge
+            startVrSessionRef={startVrSessionRef}
+            onSupportChange={setIsVrSupported}
+            onSupportCheckedChange={setIsVrSupportChecked}
+            onSessionActiveChange={setIsVrSessionActive}
+            onError={setVrError}
+          />
           <ambientLight intensity={lightingMode === "contrast" ? 0.7 : 1.15} />
           <hemisphereLight
             args={[
@@ -277,7 +474,11 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
           type="button"
           variant="secondary"
           size="sm"
-          onClick={() => setShowHelp((currentValue) => !currentValue)}
+          onClick={() => {
+            setShowHelp((currentValue) => !currentValue);
+            setShowInspector(false);
+            setShowVrInfo(false);
+          }}
           aria-expanded={showHelp}
           aria-controls="model-viewer-help"
           className="bg-background/78 hover:text-primary text-foreground border-(--paleo-border) backdrop-blur"
@@ -285,56 +486,228 @@ export function ModelViewer({ modelUrl, label }: ModelViewerProps) {
           <HelpCircle aria-hidden="true" />
           Ayuda
         </Button>
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          onClick={() => {
+            setShowInspector((currentValue) => !currentValue);
+            setShowHelp(false);
+            setShowVrInfo(false);
+          }}
+          aria-expanded={showInspector}
+          aria-controls="model-viewer-inspector"
+          className="bg-background/78 hover:text-primary text-foreground border-(--paleo-border) backdrop-blur"
+        >
+          <SlidersHorizontal aria-hidden="true" />
+          Inspector
+        </Button>
       </div>
       {showHelp ? (
         <div
           id="model-viewer-help"
-          className="bg-background/95 text-muted-foreground absolute right-4 bottom-16 left-4 z-20 max-w-md rounded-2xl border border-(--paleo-border) p-4 text-sm leading-6 shadow-[0_0_34px_rgba(0,229,255,0.12)] backdrop-blur sm:left-auto"
+          className="bg-background/95 text-muted-foreground absolute inset-x-4 top-16 bottom-4 z-30 max-w-lg overflow-y-auto rounded-2xl border border-(--paleo-border) p-4 text-sm leading-6 shadow-[0_0_34px_rgba(0,229,255,0.12)] backdrop-blur sm:top-auto sm:right-4 sm:bottom-16 sm:left-auto sm:max-h-[calc(100%-6rem)]"
         >
-          <p className="text-primary font-mono text-xs font-semibold tracking-[0.16em] uppercase">
-            Controles del modelo
-          </p>
-          <ul className="mt-2 space-y-1">
-            <li>Rotar: arrastrar con mouse o un dedo.</li>
-            <li>Zoom: rueda del mouse o gesto de pinza.</li>
-            <li>Desplazar: botón derecho, tecla control o dos dedos.</li>
-            <li>Reset: vuelve al encuadre inicial del objeto.</li>
-          </ul>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-primary font-mono text-xs font-semibold tracking-[0.16em] uppercase">
+                Cómo explorar el modelo
+              </p>
+              <p className="text-muted-foreground mt-1 text-xs">
+                Probá primero rotar, después acercar y finalmente desplazar la
+                vista si querés inspeccionar un detalle lateral.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowHelp(false)}
+              className="hover:bg-primary/10 hover:text-primary focus-visible:ring-ring text-muted-foreground inline-flex size-8 shrink-0 items-center justify-center rounded-full transition focus-visible:ring-2 focus-visible:outline-none"
+              aria-label="Cerrar ayuda del visualizador"
+            >
+              <X aria-hidden="true" className="size-4" />
+            </button>
+          </div>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            <div className="bg-secondary/35 rounded-xl border border-(--paleo-border) p-3">
+              <p className="text-foreground flex items-center gap-2 font-semibold">
+                <MousePointer2
+                  aria-hidden="true"
+                  className="text-primary size-4"
+                />
+                Mouse
+              </p>
+              <ul className="mt-1 space-y-1">
+                <li>Arrastrá con botón izquierdo para rotar.</li>
+                <li>Usá la rueda para acercar o alejar.</li>
+                <li>
+                  Botón derecho o{" "}
+                  <kbd className="rounded border border-(--paleo-border) px-1 font-mono text-[0.68rem]">
+                    Ctrl
+                  </kbd>{" "}
+                  + arrastrar para desplazar.
+                </li>
+              </ul>
+            </div>
+            <div className="bg-secondary/35 rounded-xl border border-(--paleo-border) p-3">
+              <p className="text-foreground flex items-center gap-2 font-semibold">
+                <Move3D aria-hidden="true" className="text-primary size-4" />
+                Pantalla táctil
+              </p>
+              <ul className="mt-1 space-y-1">
+                <li>Un dedo rota el objeto.</li>
+                <li>Pinza con dos dedos controla el zoom.</li>
+                <li>Dos dedos arrastrando desplazan la vista.</li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-4 grid gap-2">
+            {controlHelpItems.map(({ icon: Icon, title, description }) => (
+              <div
+                key={title}
+                className="bg-background/55 flex items-center gap-3 rounded-xl border border-(--paleo-border) p-3"
+              >
+                <Icon
+                  aria-hidden="true"
+                  className="text-primary size-4 shrink-0"
+                />
+                <div>
+                  <p className="text-foreground font-medium">{title}</p>
+                  <p className="text-muted-foreground text-xs">{description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       ) : null}
       <div className="bg-background/78 text-muted-foreground pointer-events-none absolute bottom-4 left-4 z-20 rounded-full border border-(--paleo-border) px-3 py-1 font-mono text-[0.62rem] tracking-[0.14em] uppercase shadow-sm backdrop-blur">
         Arrastrar para rotar · Scroll para zoom
       </div>
-      <div className="bg-background/82 absolute right-4 bottom-4 z-20 flex flex-col gap-2 rounded-2xl border border-(--paleo-border) p-2 shadow-sm backdrop-blur sm:flex-row sm:items-center">
-        <Button
-          type="button"
-          variant="secondary"
-          size="sm"
-          onClick={() => setAutoRotate((currentValue) => !currentValue)}
-          disabled={!hasModelUrl || !supportsWebGL}
-          aria-pressed={autoRotate}
-          className="bg-background/70 text-foreground border-(--paleo-border)"
+      <Button
+        type="button"
+        variant="secondary"
+        size="sm"
+        onClick={() => {
+          setVrError("");
+          setShowHelp(false);
+          setShowInspector(false);
+
+          if (isVrSupported && !isVrSessionActive) {
+            void startVrSessionRef.current?.();
+            return;
+          }
+
+          setShowVrInfo((currentValue) => !currentValue);
+        }}
+        aria-pressed={isVrSessionActive}
+        aria-expanded={showVrInfo}
+        aria-controls="model-viewer-vr-info"
+        aria-label={`${vrStatusLabel}: ${vrStatusDescription}`}
+        title={`${vrStatusLabel}: ${vrStatusDescription}`}
+        className="bg-background/82 hover:text-primary text-foreground absolute right-4 bottom-4 z-20 border-(--paleo-border) shadow-sm backdrop-blur"
+      >
+        <Glasses aria-hidden="true" />
+        {isVrSessionActive ? "VR activo" : "VR"}
+      </Button>
+      {showVrInfo ? (
+        <div
+          id="model-viewer-vr-info"
+          className="bg-background/95 absolute right-4 bottom-16 z-30 w-[min(22rem,calc(100%-2rem))] rounded-2xl border border-(--paleo-border) p-4 text-sm shadow-[0_0_34px_rgba(0,229,255,0.12)] backdrop-blur"
         >
-          {autoRotate ? "Pausar giro" : "Auto-giro"}
-        </Button>
-        <label className="text-muted-foreground flex items-center gap-2 font-mono text-[0.62rem] font-semibold tracking-[0.14em] uppercase">
-          Luz
-          <select
-            value={lightingMode}
-            onChange={(event) =>
-              setLightingMode(event.target.value as LightingMode)
-            }
-            disabled={!hasModelUrl || !supportsWebGL}
-            className="bg-background/70 text-foreground focus:border-primary/75 focus:ring-primary/20 h-7 rounded-lg border border-(--paleo-border) px-2 text-xs outline-none focus:ring-2"
-          >
-            {lightingOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-foreground flex items-center gap-2 font-semibold">
+                <Glasses aria-hidden="true" className="text-primary size-4" />
+                {vrStatusLabel}
+              </p>
+              <p className="text-muted-foreground mt-2 text-xs leading-5">
+                {vrStatusDescription}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowVrInfo(false)}
+              className="hover:bg-primary/10 hover:text-primary focus-visible:ring-ring text-muted-foreground inline-flex size-8 shrink-0 items-center justify-center rounded-full transition focus-visible:ring-2 focus-visible:outline-none"
+              aria-label="Cerrar información de VR"
+            >
+              <X aria-hidden="true" className="size-4" />
+            </button>
+          </div>
+        </div>
+      ) : null}
+      {showInspector ? (
+        <div
+          id="model-viewer-inspector"
+          className="bg-background/92 absolute right-4 bottom-16 z-20 w-[min(22rem,calc(100%-2rem))] rounded-2xl border border-(--paleo-border) p-4 shadow-[0_0_34px_rgba(0,229,255,0.12)] backdrop-blur"
+        >
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-primary font-mono text-xs font-semibold tracking-[0.16em] uppercase">
+                Model inspector
+              </p>
+              <p className="text-muted-foreground mt-1 text-xs">
+                Ajustes rápidos para examinar la pieza.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowInspector(false)}
+              className="hover:bg-primary/10 hover:text-primary focus-visible:ring-ring text-muted-foreground inline-flex size-8 shrink-0 items-center justify-center rounded-full transition focus-visible:ring-2 focus-visible:outline-none"
+              aria-label="Cerrar inspector del modelo"
+            >
+              <X aria-hidden="true" className="size-4" />
+            </button>
+          </div>
+          <div className="mt-4 grid gap-3">
+            <Button
+              type="button"
+              variant="secondary"
+              size="lg"
+              onClick={() => setAutoRotate((currentValue) => !currentValue)}
+              disabled={!hasModelUrl || !supportsWebGL}
+              aria-pressed={autoRotate}
+              className="bg-background/70 text-foreground border-(--paleo-border)"
+            >
+              <Rotate3D aria-hidden="true" />
+              {autoRotate ? "Pausar auto-giro" : "Activar auto-giro"}
+            </Button>
+            <label className="text-muted-foreground grid gap-2 font-mono text-[0.62rem] font-semibold tracking-[0.14em] uppercase">
+              Iluminación
+              <select
+                value={lightingMode}
+                onChange={(event) =>
+                  setLightingMode(event.target.value as LightingMode)
+                }
+                disabled={!hasModelUrl || !supportsWebGL}
+                className="focus:border-primary/75 focus:ring-primary/20 bg-background/70 text-foreground h-10 rounded-xl border border-(--paleo-border) px-3 text-sm outline-none focus:ring-2"
+              >
+                {lightingOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <p className="text-muted-foreground text-xs leading-5">
+              Estudio conserva reflejos del entorno. Neutra reduce acentos.
+              Contraste resalta relieve y bordes.
+            </p>
+            <div className="bg-background/55 rounded-xl border border-(--paleo-border) p-3">
+              <p className="text-foreground flex items-center gap-2 text-sm font-semibold">
+                <Glasses aria-hidden="true" className="text-primary size-4" />
+                {vrStatusLabel}
+              </p>
+              <p className="text-muted-foreground mt-1 text-xs leading-5">
+                {vrStatusDescription}
+              </p>
+            </div>
+            {vrError ? (
+              <p className="text-destructive text-xs leading-5" role="status">
+                {vrError}
+              </p>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }

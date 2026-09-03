@@ -30,7 +30,5 @@ test("specimen detail includes metadata and navigation", async ({ page }) => {
   ).toBeVisible();
   await expect(page.getByText("Ficha científica")).toBeVisible();
   await expect(page.getByRole("link", { name: /Siguiente/i })).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: /Descargar ficha JSON/i }),
-  ).toBeVisible();
+  await expect(page.getByRole("link", { name: /Ficha JSON/i })).toBeVisible();
 });

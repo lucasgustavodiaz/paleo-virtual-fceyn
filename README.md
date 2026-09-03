@@ -46,7 +46,7 @@ Antes de publicar cambios de interfaz, revisar manualmente:
 
 - Modo claro y oscuro en `/`, `/collection`, `/about` y `/specimens/[slug]`.
 - Navegación mobile, sheet lateral y cards de colección.
-- Viewer 3D con modelo disponible, URL inválida y modelo pendiente.
+- Viewer 3D con modelo disponible, URL inválida, modelo pendiente y botón VR en un dispositivo WebXR compatible.
 - Preview generado en `/opengraph-image`.
 - Favicon generado en `/icon.svg` y su lectura a tamaño de pestaña.
 
@@ -55,6 +55,8 @@ Antes de publicar cambios de interfaz, revisar manualmente:
 - La colección persiste búsqueda, filtros y ordenamiento en la URL para compartir vistas filtradas.
 - Las fichas de espécimen incluyen navegación anterior/siguiente y descarga del registro actual en JSON.
 - El viewer 3D incluye pantalla completa, reset de cámara, ayuda contextual, auto-giro, selector de iluminación y fallback cuando WebGL no está disponible.
+- Las acciones externas del modelo incluyen compartir, copiar enlace, copiar código embed, abrir/descargar GLB, descargar JSON, like local y métricas locales de vistas/descargas.
+- El inspector del viewer puede iniciar una sesión VR real vía WebXR cuando el navegador y el dispositivo soportan `immersive-vr`; si no hay soporte, el botón queda deshabilitado.
 - El sitio expone `/sitemap.xml`, `/robots.txt`, `/opengraph-image` y `/icon.svg` desde App Router.
 
 ## Tests
